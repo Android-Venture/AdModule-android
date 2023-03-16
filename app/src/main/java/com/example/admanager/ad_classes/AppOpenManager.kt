@@ -82,12 +82,14 @@ class AppOpenManager(private val myApplication: Application) :
                         isShowingAd = true
                     }
                 }
-            if (ShowAppOpen) {
+ //           if (ShowAppOpen) {
                 appOpenAd!!.show(currentActivity!!)
                 appOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
-                ShowAppOpen = false
-            }
-        } else {
+   //             ShowAppOpen = false
+//            }
+        }
+
+        else {
             Log.d(LOG_TAG, "Can not show ad.")
             fetchAd()
         }
@@ -130,8 +132,8 @@ class AppOpenManager(private val myApplication: Application) :
 
     companion object {
         const val LOG_TAG = "AppOpenManager"
-        const val AD_UNIT_ID = "ca-app-pub-4044711852555974/6480311198"
-        var ShowAppOpen = false
+        const val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
+//        var ShowAppOpen = false
         private var isShowingAd = false
     }
 }

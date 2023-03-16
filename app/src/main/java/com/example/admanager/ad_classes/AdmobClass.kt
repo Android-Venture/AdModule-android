@@ -15,6 +15,11 @@ import com.example.admanager.common.AdInstance.admobNative1
 import com.example.admanager.common.AdInstance.admobNative2
 import com.example.admanager.common.AdInstance.admobNativesp
 import com.example.admanager.common.AdInstance.admob_interstitial
+import com.example.admanager.common.AdLoadingDialog.hideDialog
+import com.example.admanager.common.AdLoadingDialog.showDialog
+import com.example.admanager.common.AdLogPrefs
+import com.example.admanager.common.Utils
+import com.example.admanager.models.AdLogModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -22,24 +27,26 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
+import kotlinx.coroutines.*
 
-class AdmobClass {
-
-    companion object{
-
+object AdmobClass {
 
         var sendrequest1 = true
         var sendrequest2 = true
         var tag_splash = false
 
         // NATIVE AD REQUEST
-        fun load_native_admob1(activity: Activity?) {
+        fun load_native_admob1(activity: Activity?,adUnitId:String) {
 
             if (admobNative1 != null) {
                 admobNative1 = null
             }
+
+            Utils.NATIVE_REQUEST++
+            AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),activity!!)
+
             val builder: AdLoader.Builder = AdLoader.Builder(
-                activity!!,""
+                activity!!,adUnitId
             )
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
                 if (admobNative1 != null) {
@@ -67,7 +74,10 @@ class AdmobClass {
 
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    load_native_admob1(activity)
+                    load_native_admob1(activity,adUnitId)
+                    Utils.NATIVE_IMPRESSION++
+                    AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),activity!!)
+
                 }
             }).build()
             loader.loadAd(AdRequest.Builder().build())
@@ -75,13 +85,18 @@ class AdmobClass {
 
         }
 
-        fun load_native_admob2(activity: Activity?) {
+        fun load_native_admob2(activity: Activity?,adUnitId:String) {
+
 
             if (admobNative2 != null) {
                 admobNative2 = null
             }
+
+            Utils.NATIVE_REQUEST++
+            AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),activity!!)
+
             val builder: AdLoader.Builder = AdLoader.Builder(
-                activity!!, "")
+                activity!!, adUnitId)
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
                 if (admobNative2 != null) {
                     admobNative2!!.destroy()
@@ -108,7 +123,10 @@ class AdmobClass {
 
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    load_native_admob2(activity)
+                    load_native_admob2(activity,adUnitId)
+                    Utils.NATIVE_IMPRESSION++
+                    AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),activity!!)
+
                 }
             }).build()
             loader.loadAd(AdRequest.Builder().build())
@@ -202,7 +220,7 @@ class AdmobClass {
             adView.setNativeAd(admob_native)
         }
 
-        fun showNative(activity: Activity?, container: FrameLayout) {
+        fun showNative(activity: Activity?, container: FrameLayout,adUnitId: String) {
 
             if (admobNative1 != null) {
                 inflateAdmob(activity, admobNative1, container)
@@ -212,23 +230,27 @@ class AdmobClass {
 
             } else {
                 if (!sendrequest1) {
-                    load_native_admob1(activity)
+                    load_native_admob1(activity,adUnitId)
 
                 }
                 if (!sendrequest2) {
-                    load_native_admob2(activity)
+                    load_native_admob2(activity,adUnitId)
                 }
             }
 
         }
 
+
+
         //INTERSTITIAL
-        fun loadadmob_Interstitial(context: Context?) {
+        fun loadadmob_Interstitial(context: Context?, adUnitId:String) {
             if (admob_interstitial != null) {
                 admob_interstitial = null
             }
+            Utils.INTERSTITIAL_REQUEST++
+            AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),context!!)
             val request: AdRequest =    AdRequest.Builder().build()
-            InterstitialAd.load(context!!,"",
+            InterstitialAd.load(context!!,adUnitId,
                 request, object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(@NonNull interstitialAd: InterstitialAd) {
                         super.onAdLoaded(interstitialAd)
@@ -244,11 +266,33 @@ class AdmobClass {
 
         }
 
-        fun showInterAdmob(activity: Activity?, callback: FullScreenContentCallback?) {
-            if (admob_interstitial != null) {
-                admob_interstitial!!.setFullScreenContentCallback(callback)
-                admob_interstitial!!.show(activity!!)
+
+    fun showAdMobInter(activity: Activity?,adUnitId: String, onADClose: (Boolean) -> Unit) {
+        if (admob_interstitial != null) {
+            showDialog(activity!!)
+            admob_interstitial!!.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent()
+                    onADClose.invoke(true)
+                    loadadmob_Interstitial(activity,adUnitId)
+                }
+
+                override fun onAdImpression() {
+                    super.onAdImpression()
+                      Utils.INTERSTITIAL_IMPRESSION++
+                    AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),activity!!)
+
+                }
+            }
+
+            CoroutineScope(Dispatchers.Default).launch {
+                delay(1500)
+                withContext(Dispatchers.Main) {
+                    hideDialog()
+                    admob_interstitial!!.show(activity)
+                }
             }
         }
     }
+
 }
