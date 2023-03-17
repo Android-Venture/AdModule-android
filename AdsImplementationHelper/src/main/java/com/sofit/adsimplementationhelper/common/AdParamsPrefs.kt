@@ -3,31 +3,29 @@ package com.sofit.adsimplementationhelper.common
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.admanager.models.AdLogModel
+import com.example.admanager.models.AdRequestParamModel
 import com.google.gson.Gson
 
-object AdLogPrefs{
-
-
-
+object AdParamsPrefs {
 
 
     private val gson = Gson()
 
-    fun saveLogs(myObject: AdLogModel,context: Context) {
-        val preferenceName = "AD_LOG_PREFS"
-         val preference: SharedPreferences =
+    fun saveParams(params: AdRequestParamModel, context: Context) {
+        val preferenceName = "AD_PARAMS_PREFS"
+        val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
-        val jsonString = gson.toJson(myObject)
-        preference.edit().putString(Utils.ADS_LOG_PREFS_KEY, jsonString).apply()
+        val jsonString = gson.toJson(params)
+        preference.edit().putString(Utils.ADS_PARAM_PREFS_KEY, jsonString).apply()
     }
 
-    fun getLogs(context: Context): AdLogModel? {
+    fun getParams(context: Context): AdRequestParamModel? {
         val preferenceName = "AD_LOG_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
-        val jsonString = preference.getString(Utils.ADS_LOG_PREFS_KEY, null)
+        val jsonString = preference.getString(Utils.ADS_PARAM_PREFS_KEY, null)
         return if (jsonString != null) {
-            gson.fromJson(jsonString, AdLogModel::class.java)
+            gson.fromJson(jsonString, AdRequestParamModel::class.java)
         } else {
             null
         }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import com.example.admanager.models.AdLogModel
+import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.*
 import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.Utils
@@ -13,18 +14,14 @@ import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
 object AdmobBanner {
 
 
-    var counter = 0
 
     fun showAdmobBanner(
         admob_banner: FrameLayout,
-        context: Context
-    ) {
+        context: Context,
+    requestParams:AdRequestParamModel) {
 
-        if (!isInternetConnected(context)) {
-            return
-        } else if (counter < 20
-        ) {
-            counter++
+        if (isInternetConnected(context)  && requestParams.banner_ad_status!! )  {
+
             val adView = AdView(context)
             Utils.BANNER_REQUEST++
             AdLogPrefs.saveLogs(
@@ -39,7 +36,7 @@ object AdmobBanner {
             )
 
             adView.setAdSize(AdSize.BANNER)
-            adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+            adView.adUnitId = requestParams.banner_id!!
             admob_banner.addView(adView)
             val adRequest = AdRequest.Builder().build()
             adView.adListener = object : AdListener() {

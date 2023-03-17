@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -16,7 +17,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
 
-class AppOpenManager(private val myApplication: Application) :
+class AppOpenManager(private val myApplication: Application, val ad_params: AdRequestParamModel) :
     ActivityLifecycleCallbacks, LifecycleObserver {
     private var appOpenAd: AppOpenAd? = null
     var loadCallback: AppOpenAdLoadCallback? = null
@@ -51,13 +52,16 @@ class AppOpenManager(private val myApplication: Application) :
             }
         }
         val request = adRequest
-        AppOpenAd.load(
-            myApplication,
-            AD_UNIT_ID,
-            request,
-            AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-            loadCallback as AppOpenAdLoadCallback
-        )
+        if (ad_params.app_open_ad_status!!){
+            AppOpenAd.load(
+                myApplication,
+                ad_params.app_open_ad_id!!,
+                request,
+                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
+                loadCallback as AppOpenAdLoadCallback
+            )
+        }
+
     }
 
     /**

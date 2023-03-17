@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import com.example.admanager.models.AdLogModel
+import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -36,13 +37,13 @@ object AdmobClass {
     var tag_splash = false
 
     // NATIVE AD REQUEST
-    fun load_native_admob1(activity: Activity?, adUnitId: String) {
+    fun load_native_admob1(activity: Activity?, requestParams:AdRequestParamModel) {
 
         if (admobNative1 != null) {
             admobNative1 = null
         }
 
-        if (Utils.isInternetConnected(activity!!)){
+        if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!){
             Utils.NATIVE_REQUEST++
             AdLogPrefs.saveLogs(
                 AdLogModel(
@@ -55,7 +56,7 @@ object AdmobClass {
                 ), activity!!
             )
             val builder: AdLoader.Builder = AdLoader.Builder(
-                activity!!, adUnitId
+                activity!!, requestParams.native_id!!
             )
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
                 if (admobNative1 != null) {
@@ -81,7 +82,7 @@ object AdmobClass {
                 }
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    load_native_admob1(activity, adUnitId)
+                    load_native_admob1(activity, requestParams)
                     Utils.NATIVE_IMPRESSION++
                     AdLogPrefs.saveLogs(
                         AdLogModel(
@@ -101,12 +102,12 @@ object AdmobClass {
 
     }
 
-    fun load_native_admob2(activity: Activity?, adUnitId: String) {
+    fun load_native_admob2(activity: Activity?, requestParams:AdRequestParamModel) {
 
         if (admobNative2 != null) {
             admobNative2 = null
         }
-        if (Utils.isInternetConnected(activity!!)) {
+        if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!) {
             Utils.NATIVE_REQUEST++
             AdLogPrefs.saveLogs(
                 AdLogModel(
@@ -119,7 +120,7 @@ object AdmobClass {
                 ), activity!!
             )
             val builder: AdLoader.Builder = AdLoader.Builder(
-                activity!!, adUnitId
+                activity!!,requestParams.native_id!!
             )
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
                 if (admobNative2 != null) {
@@ -148,7 +149,7 @@ object AdmobClass {
 
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    load_native_admob2(activity, adUnitId)
+                    load_native_admob2(activity, requestParams)
                     Utils.NATIVE_IMPRESSION++
                     AdLogPrefs.saveLogs(
                         AdLogModel(
@@ -248,7 +249,7 @@ object AdmobClass {
         adView.setNativeAd(admob_native)
     }
 
-    fun showNative(activity: Activity?, container: FrameLayout, adUnitId: String) {
+    fun showNative(activity: Activity?, container: FrameLayout, requestParams: AdRequestParamModel) {
 
         if (admobNative1 != null) {
             inflateAdmob(activity, admobNative1, container)
@@ -258,23 +259,23 @@ object AdmobClass {
 
         } else {
             if (!isSendRequest1) {
-                load_native_admob1(activity, adUnitId)
+                load_native_admob1(activity,requestParams )
 
             }
             if (!isSendRequest2) {
-                load_native_admob2(activity, adUnitId)
+                load_native_admob2(activity, requestParams)
             }
         }
 
     }
 
     //INTERSTITIAL
-    fun loadadmob_Interstitial(context: Context?, adUnitId: String) {
+    fun loadadmob_Interstitial(context: Context?, requestParams: AdRequestParamModel) {
         if (admob_interstitial != null) {
             admob_interstitial = null
         }
 
-        if (Utils.isInternetConnected(context!!)) {
+        if (Utils.isInternetConnected(context!!) && requestParams.intersitial_ad_status!!) {
             Utils.INTERSTITIAL_REQUEST++
             AdLogPrefs.saveLogs(
                 AdLogModel(
@@ -287,7 +288,7 @@ object AdmobClass {
                 ), context!!
             )
             val request: AdRequest = AdRequest.Builder().build()
-            InterstitialAd.load(context!!, adUnitId,
+            InterstitialAd.load(context!!, requestParams.intersitial_id!!,
                 request, object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(@NonNull interstitialAd: InterstitialAd) {
                         super.onAdLoaded(interstitialAd)
@@ -304,14 +305,14 @@ object AdmobClass {
         }
     }
 
-    fun showAdMobInter(activity: Activity?, adUnitId: String, onADClose: (Boolean) -> Unit) {
+    fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel, onADClose: (Boolean) -> Unit) {
         if (admob_interstitial != null) {
             showDialog(activity!!)
             admob_interstitial!!.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent()
                     onADClose.invoke(true)
-                    loadadmob_Interstitial(activity, adUnitId)
+                    loadadmob_Interstitial(activity, requestParams)
                 }
 
                 override fun onAdImpression() {

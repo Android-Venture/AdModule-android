@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.MobileAds
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
@@ -15,6 +16,9 @@ object Utils {
     var NATIVE_IMPRESSION : Int = 0
     var INTERSTITIAL_REQUEST :Int = 0
     var INTERSTITIAL_IMPRESSION : Int = 0
+
+    const val ADS_PARAM_PREFS_KEY = "ADS_PARAM"
+    const val ADS_LOG_PREFS_KEY = "ADS_LOG"
     fun isInternetConnected(context: Context): Boolean {
         var isConnected = false
         val connectivityManager =context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -42,14 +46,17 @@ object Utils {
         return isConnected
     }
 
-    fun adNetworkInitialize(context: Context,application: Application){
+    fun adNetworkInitialize(application: Application,ad_params:AdRequestParamModel){
 
 
-        MobileAds.initialize(context){
+        if (isInternetConnected(application.applicationContext)){
+            MobileAds.initialize(application.applicationContext){
 
-         AppOpenManager(application)
+                AppOpenManager(application,ad_params)
 
-
+            }
         }
+
+
     }
 }
