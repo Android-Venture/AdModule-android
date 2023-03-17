@@ -3,11 +3,12 @@ package com.example.admanager.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.admanager.common.AdLogPrefs
+
 
 import com.example.admanager.databinding.ActivityAdTestBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
+import com.sofit.adsimplementationhelper.common.AdLogPrefs
 
 class AdTestActivity : AppCompatActivity() {
 

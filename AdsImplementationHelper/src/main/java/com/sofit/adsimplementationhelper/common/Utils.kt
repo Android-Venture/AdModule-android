@@ -46,7 +46,10 @@ object Utils {
 
 
         MobileAds.initialize(context){
-            AppOpenManager(application)
+
+         AppOpenManager(application)
+
+
         }
     }
 }

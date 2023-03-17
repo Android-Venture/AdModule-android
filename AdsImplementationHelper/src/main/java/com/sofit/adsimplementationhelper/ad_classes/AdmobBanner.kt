@@ -10,8 +10,7 @@ import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.Utils
 import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
 
-object  AdmobBanner {
-
+object AdmobBanner {
 
 
     var counter = 0
@@ -27,8 +26,17 @@ object  AdmobBanner {
         ) {
             counter++
             val adView = AdView(context)
-             Utils.BANNER_REQUEST++
-            AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),context)
+            Utils.BANNER_REQUEST++
+            AdLogPrefs.saveLogs(
+                AdLogModel(
+                    Utils.BANNER_REQUEST,
+                    Utils.BANNER_IMPRESSION,
+                    Utils.NATIVE_REQUEST,
+                    Utils.NATIVE_IMPRESSION,
+                    Utils.INTERSTITIAL_REQUEST,
+                    Utils.INTERSTITIAL_IMPRESSION
+                ), context
+            )
 
             adView.setAdSize(AdSize.BANNER)
             adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
@@ -49,7 +57,16 @@ object  AdmobBanner {
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.BANNER_IMPRESSION++
-                    AdLogPrefs.saveLogs(AdLogModel(Utils.BANNER_REQUEST,Utils.BANNER_IMPRESSION,Utils.NATIVE_REQUEST,Utils.NATIVE_IMPRESSION,Utils.INTERSTITIAL_REQUEST,Utils.INTERSTITIAL_IMPRESSION),context)
+                    AdLogPrefs.saveLogs(
+                        AdLogModel(
+                            Utils.BANNER_REQUEST,
+                            Utils.BANNER_IMPRESSION,
+                            Utils.NATIVE_REQUEST,
+                            Utils.NATIVE_IMPRESSION,
+                            Utils.INTERSTITIAL_REQUEST,
+                            Utils.INTERSTITIAL_IMPRESSION
+                        ), context
+                    )
 
                 }
 
