@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.example.admanager.R
-import com.example.admanager.ad_classes.AdmobClass
+import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         AdmobClass.load_native_admob1(this,"ca-app-pub-3940256099942544/2247696110")
         AdmobClass.load_native_admob2(this,"ca-app-pub-3940256099942544/2247696110")
-
+        AdmobClass.loadadmob_Interstitial(this,  "ca-app-pub-3940256099942544/8691691433")
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 
