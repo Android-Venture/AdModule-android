@@ -20,7 +20,7 @@ object AdParamsPrefs {
     }
 
     fun getParams(context: Context): AdRequestParamModel? {
-        val preferenceName = "AD_LOG_PREFS"
+        val preferenceName = "AD_PARAMS_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
         val jsonString = preference.getString(Utils.ADS_PARAM_PREFS_KEY, null)

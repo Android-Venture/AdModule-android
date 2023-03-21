@@ -16,8 +16,9 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 
-class AppOpenManager(private val myApplication: Application, val ad_params: AdRequestParamModel) :
+class AppOpenManager(private val myApplication: Application) :
     ActivityLifecycleCallbacks, LifecycleObserver {
     private var appOpenAd: AppOpenAd? = null
     var loadCallback: AppOpenAdLoadCallback? = null
@@ -52,10 +53,10 @@ class AppOpenManager(private val myApplication: Application, val ad_params: AdRe
             }
         }
         val request = adRequest
-        if (ad_params.app_open_ad_status!!){
+        if (AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!){
             AppOpenAd.load(
                 myApplication,
-                ad_params.app_open_ad_id!!,
+                AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_id!!,
                 request,
                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
                 loadCallback as AppOpenAdLoadCallback
@@ -70,33 +71,36 @@ class AppOpenManager(private val myApplication: Application, val ad_params: AdRe
     fun showAdIfAvailable() {
         // Only show ad if there is not already an app open ad currently showing
         // and an ad is available.
-        if (!isShowingAd && isAdAvailable) {
-            Log.d(LOG_TAG, "Will show ad.")
-            val fullScreenContentCallback: FullScreenContentCallback =
-                object : FullScreenContentCallback() {
-                    override fun onAdDismissedFullScreenContent() {
-                        // Set the reference to null so isAdAvailable() returns false.
-                        appOpenAd = null
-                        isShowingAd = false
-                        fetchAd()
-                    }
+        if (AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!){
+            if (!isShowingAd && isAdAvailable) {
+                Log.d(LOG_TAG, "Will show ad.")
+                val fullScreenContentCallback: FullScreenContentCallback =
+                    object : FullScreenContentCallback() {
+                        override fun onAdDismissedFullScreenContent() {
+                            // Set the reference to null so isAdAvailable() returns false.
+                            appOpenAd = null
+                            isShowingAd = false
+                            fetchAd()
+                        }
 
-                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
-                    override fun onAdShowedFullScreenContent() {
-                        isShowingAd = true
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
+                        override fun onAdShowedFullScreenContent() {
+                            isShowingAd = true
+                        }
                     }
-                }
- //           if (ShowAppOpen) {
+                //           if (ShowAppOpen) {
                 appOpenAd!!.show(currentActivity!!)
                 appOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
-   //             ShowAppOpen = false
+                //             ShowAppOpen = false
 //            }
+            }
+
+            else {
+                Log.d(LOG_TAG, "Can not show ad.")
+                fetchAd()
+            }
         }
 
-        else {
-            Log.d(LOG_TAG, "Can not show ad.")
-            fetchAd()
-        }
     }
 
     /**

@@ -10,6 +10,6 @@ class ApplicationClass:Application() {
     override fun onCreate() {
         super.onCreate()
 
-       Utils.adNetworkInitialize(this,AdParamsPrefs.getParams(this)!!)
+       Utils.adNetworkInitialize(this)
     }
 }

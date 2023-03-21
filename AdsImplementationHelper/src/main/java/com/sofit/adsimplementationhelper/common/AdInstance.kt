@@ -9,5 +9,6 @@ object AdInstance {
     var admobNative2: NativeAd? = null
     var admobNativesp: NativeAd? = null
 
-    var admob_interstitial: InterstitialAd? = null
+    var admob_interstitial1: InterstitialAd? = null
+    var admob_interstitial2:InterstitialAd? = null
 }

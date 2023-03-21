@@ -46,13 +46,13 @@ object Utils {
         return isConnected
     }
 
-    fun adNetworkInitialize(application: Application,ad_params:AdRequestParamModel){
+    fun adNetworkInitialize(application: Application){
 
 
         if (isInternetConnected(application.applicationContext)){
             MobileAds.initialize(application.applicationContext){
 
-                AppOpenManager(application,ad_params)
+                AppOpenManager(application)
 
             }
         }
