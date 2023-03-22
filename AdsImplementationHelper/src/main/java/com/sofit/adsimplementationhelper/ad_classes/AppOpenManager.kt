@@ -16,7 +16,9 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
+import com.sofit.adsimplementationhelper.common.Utils
 
 class AppOpenManager(private val myApplication: Application) :
     ActivityLifecycleCallbacks, LifecycleObserver {
@@ -53,7 +55,8 @@ class AppOpenManager(private val myApplication: Application) :
             }
         }
         val request = adRequest
-        if (AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!){
+
+        if ((AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!)){
             AppOpenAd.load(
                 myApplication,
                 AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_id!!,
@@ -140,7 +143,6 @@ class AppOpenManager(private val myApplication: Application) :
 
     companion object {
         const val LOG_TAG = "AppOpenManager"
-        const val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
 //        var ShowAppOpen = false
         private var isShowingAd = false
     }

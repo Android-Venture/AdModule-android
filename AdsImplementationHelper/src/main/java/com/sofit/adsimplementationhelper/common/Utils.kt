@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.MobileAds
+import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
 object Utils {
@@ -49,14 +50,19 @@ object Utils {
     fun adNetworkInitialize(application: Application){
 
 
-        if (isInternetConnected(application.applicationContext)){
-            MobileAds.initialize(application.applicationContext){
-
-                AppOpenManager(application)
-
-            }
-        }
+         if (isInternetConnected(application.applicationContext) && isAppDownloadedFromPlayStore(application.applicationContext)){
+             MobileAds.initialize(application.applicationContext){
+                 AppOpenManager(application)
+             }
+         }
 
 
+
+
+    }
+
+    fun isAppDownloadedFromPlayStore(context: Context): Boolean {
+        val installer = context.packageManager.getInstallerPackageName(context.packageName)
+        return "com.android.vending" == installer
     }
 }
