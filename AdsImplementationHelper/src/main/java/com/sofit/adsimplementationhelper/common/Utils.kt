@@ -1,11 +1,15 @@
 package com.sofit.adsimplementationhelper.common
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.DisplayMetrics
+import android.view.View
 import com.example.admanager.models.AdRequestParamModel
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.MobileAds
 import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
@@ -64,5 +68,23 @@ object Utils {
     fun isAppDownloadedFromPlayStore(context: Context): Boolean {
         val installer = context.packageManager.getInstallerPackageName(context.packageName)
         return "com.android.vending" == installer
+    }
+
+
+    fun getAdSize(activity: Activity, view: View): AdSize? {
+        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        val display = activity.windowManager.defaultDisplay
+        val outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+
+        val density = outMetrics.density
+
+        var adWidthPixels = view.width.toFloat()
+        if (adWidthPixels == 0f) {
+            adWidthPixels = outMetrics.widthPixels.toFloat()
+        }
+
+        val adWidth = (adWidthPixels / density).toInt()
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth)
     }
 }

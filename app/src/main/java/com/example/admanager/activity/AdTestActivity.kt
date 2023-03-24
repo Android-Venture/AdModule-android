@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.admanager.databinding.ActivityAdTestBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
+import com.sofit.adsimplementationhelper.common.AdLoadCallback
 import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 
@@ -20,7 +21,16 @@ class AdTestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!)
+        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!,object :AdLoadCallback{
+            override fun onLoaded() {
+
+            }
+
+            override fun onFailed() {
+
+            }
+
+        })
         AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!)
 
         binding.showInterBtn.setOnClickListener {

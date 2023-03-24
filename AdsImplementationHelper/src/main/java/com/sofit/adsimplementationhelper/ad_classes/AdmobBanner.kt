@@ -1,5 +1,6 @@
 package com.sofit.adsimplementationhelper.ad_classes
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.View
@@ -14,15 +15,14 @@ import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
 object AdmobBanner {
 
 
-
     fun showAdmobBanner(
         admob_banner: FrameLayout,
-        context: Context,
-    requestParams:AdRequestParamModel) {
+        activity: Activity,
+        requestParams:AdRequestParamModel, callback:com.sofit.adsimplementationhelper.common.AdLoadCallback) {
 
-        if (isInternetConnected(context)  && requestParams.banner_ad_status!! )  {
+        if (isInternetConnected(activity)  && requestParams.banner_ad_status!! )  {
 
-            val adView = AdView(context)
+            val adView = AdView(activity)
             Utils.BANNER_REQUEST++
             AdLogPrefs.saveLogs(
                 AdLogModel(
@@ -32,10 +32,10 @@ object AdmobBanner {
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
                     Utils.INTERSTITIAL_IMPRESSION
-                ), context
+                ), activity
             )
 
-            adView.setAdSize(AdSize.BANNER)
+            Utils.getAdSize(activity, admob_banner)?.let { adView.setAdSize(it) }
             adView.adUnitId = requestParams.banner_id!!
             admob_banner.addView(adView)
             val adRequest = AdRequest.Builder().build()
@@ -43,12 +43,14 @@ object AdmobBanner {
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     super.onAdFailedToLoad(loadAdError)
 
+                    callback.onFailed()
                     Log.d("BANNER", "onAdFailedToLoad:$loadAdError")
                 }
 
                 override fun onAdLoaded() {
                     super.onAdLoaded()
-                    admob_banner.visibility = View.VISIBLE
+                    callback.onLoaded()
+//                    admob_banner.visibility = View.VISIBLE
                 }
 
                 override fun onAdImpression() {
@@ -62,7 +64,7 @@ object AdmobBanner {
                             Utils.NATIVE_IMPRESSION,
                             Utils.INTERSTITIAL_REQUEST,
                             Utils.INTERSTITIAL_IMPRESSION
-                        ), context
+                        ), activity
                     )
 
                 }
