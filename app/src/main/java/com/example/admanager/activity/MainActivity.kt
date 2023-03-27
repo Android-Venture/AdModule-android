@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import com.example.admanager.R
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
+import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,9 +16,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AdmobClass.load_native_admob1(this,"ca-app-pub-3940256099942544/2247696110")
-        AdmobClass.load_native_admob2(this,"ca-app-pub-3940256099942544/2247696110")
-        AdmobClass.loadadmob_Interstitial(this,  "ca-app-pub-3940256099942544/8691691433")
+        AdmobClass.load_native_admob1(this, AdParamsPrefs.getParams(this)!!)
+        AdmobClass.load_native_admob2(this,AdParamsPrefs.getParams(this)!!)
+        AdmobClass.loadadmob_Interstitial(this,  AdParamsPrefs.getParams(this)!!)
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 

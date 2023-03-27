@@ -18,14 +18,14 @@ object AdLogPrefs{
          val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
         val jsonString = gson.toJson(myObject)
-        preference.edit().putString("ADS_LOG", jsonString).apply()
+        preference.edit().putString(Utils.ADS_LOG_PREFS_KEY, jsonString).apply()
     }
 
     fun getLogs(context: Context): AdLogModel? {
         val preferenceName = "AD_LOG_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
-        val jsonString = preference.getString("ADS_LOG", null)
+        val jsonString = preference.getString(Utils.ADS_LOG_PREFS_KEY, null)
         return if (jsonString != null) {
             gson.fromJson(jsonString, AdLogModel::class.java)
         } else {

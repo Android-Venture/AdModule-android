@@ -3,11 +3,14 @@ package com.example.admanager.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.admanager.common.AdLogPrefs
+
 
 import com.example.admanager.databinding.ActivityAdTestBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
+import com.sofit.adsimplementationhelper.common.AdLoadCallback
+import com.sofit.adsimplementationhelper.common.AdLogPrefs
+import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 
 class AdTestActivity : AppCompatActivity() {
 
@@ -18,12 +21,21 @@ class AdTestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this)
-        AdmobClass.showNative(this,binding.nativeAdFrame,"ca-app-pub-3940256099942544/2247696110")
+        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!,object :AdLoadCallback{
+            override fun onLoaded() {
+
+            }
+
+            override fun onFailed() {
+
+            }
+
+        })
+        AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!)
 
         binding.showInterBtn.setOnClickListener {
 
-            AdmobClass.showAdMobInter(this,"ca-app-pub-3940256099942544/8691691433"){
+            AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!){
 
             }
         }
