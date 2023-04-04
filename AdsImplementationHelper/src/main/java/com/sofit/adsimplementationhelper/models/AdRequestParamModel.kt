@@ -1,6 +1,7 @@
 package com.example.admanager.models
 
 data class AdRequestParamModel(
+    //TODO: Avoid using snake case instead use Camel case for kotlin and snake case for xml
 
     var banner_id: String? = null,
     var native_id: String?= null,

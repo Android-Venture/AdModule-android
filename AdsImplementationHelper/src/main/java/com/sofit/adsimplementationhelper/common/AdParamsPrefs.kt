@@ -11,7 +11,10 @@ object AdParamsPrefs {
 
     private val gson = Gson()
 
+    //TODO : Why this function is not been used and get params is been used ?
     fun saveParams(params: AdRequestParamModel, context: Context) {
+
+        //TODO : Static string are not allowed, create a Constant file and shift these there.
         val preferenceName = "AD_PARAMS_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
@@ -20,6 +23,8 @@ object AdParamsPrefs {
     }
 
     fun getParams(context: Context): AdRequestParamModel? {
+
+        //TODO : Static string are not allowed, create a Constant file and shift these there.
         val preferenceName = "AD_PARAMS_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)

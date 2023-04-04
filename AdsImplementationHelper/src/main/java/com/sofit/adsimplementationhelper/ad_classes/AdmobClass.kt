@@ -31,13 +31,16 @@ import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.Utils
 import kotlinx.coroutines.*
 
+//TODO : 37 warnings and 36 weak warning in this class
 object AdmobClass {
 
     var isSendRequest1 = true
     var isSendRequest2 = true
+    //TODO:Camel case and snake case should not be used together
     var tag_splash = false
 
     // NATIVE AD REQUEST
+    //TODO: Naming conventions should be followed
     fun load_native_admob1(activity: Activity?, requestParams:AdRequestParamModel) {
 
         if (admobNative1 != null) {
@@ -54,9 +57,12 @@ object AdmobClass {
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
                     Utils.INTERSTITIAL_IMPRESSION
+                //TODO: Double band operators are not allowed
                 ), activity!!
             )
             val builder: AdLoader.Builder = AdLoader.Builder(
+                //TODO: Double band operators are not allowed
+
                 activity!!, requestParams.native_id!!
             )
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
@@ -75,6 +81,7 @@ object AdmobClass {
                 }
                 override fun onAdClosed() {
                     super.onAdClosed()
+                    //TODO:Remove logs before commit
                     Log.d("ADMOB_NATIVE", "onAdClosed: ")
                 }
                 override fun onAdLoaded() {
@@ -93,6 +100,7 @@ object AdmobClass {
                             Utils.NATIVE_IMPRESSION,
                             Utils.INTERSTITIAL_REQUEST,
                             Utils.INTERSTITIAL_IMPRESSION
+                            //TODO: Double band operators are not allowed
                         ), activity!!
                     )
                 }
@@ -103,6 +111,7 @@ object AdmobClass {
 
     }
 
+    //TODO: Naming convention issue
     fun load_native_admob2(activity: Activity?, requestParams:AdRequestParamModel) {
 
         if (admobNative2 != null) {
@@ -118,9 +127,13 @@ object AdmobClass {
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
                     Utils.INTERSTITIAL_IMPRESSION
+                    //TODO: Double band operators are not allowed
+
                 ), activity!!
             )
             val builder: AdLoader.Builder = AdLoader.Builder(
+                //TODO: Double band operators are not allowed
+
                 activity!!,requestParams.native_id!!
             )
             builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
@@ -140,6 +153,7 @@ object AdmobClass {
 
                 override fun onAdClosed() {
                     super.onAdClosed()
+
                     Log.d("ADMOB_NATIVE", "onAdClosed: ")
                 }
 
@@ -160,6 +174,8 @@ object AdmobClass {
                             Utils.NATIVE_IMPRESSION,
                             Utils.INTERSTITIAL_REQUEST,
                             Utils.INTERSTITIAL_IMPRESSION
+                            //TODO: Double band operators are not allowed
+
                         ), activity!!
                     )
 
@@ -168,6 +184,7 @@ object AdmobClass {
             loader.loadAd(AdRequest.Builder().build())
         }
     }
+
 
     fun load_native_admobsp(activity: Activity?, container: FrameLayout) {
         if (admobNativesp != null) {

@@ -14,6 +14,7 @@ import com.google.android.gms.ads.MobileAds
 import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
+//TODO: This file contain 1 error 11 warnings and 1 minor error make sure to remove these type of errors before commit
 object Utils {
     var BANNER_REQUEST :Int = 0
     var BANNER_IMPRESSION : Int = 0
@@ -22,6 +23,7 @@ object Utils {
     var INTERSTITIAL_REQUEST :Int = 0
     var INTERSTITIAL_IMPRESSION : Int = 0
 
+    //TODO : Static string are not allowed, create a Constant file and shift these there.
     const val ADS_PARAM_PREFS_KEY = "ADS_PARAM"
     const val ADS_LOG_PREFS_KEY = "ADS_LOG"
     fun isInternetConnected(context: Context): Boolean {
@@ -59,6 +61,7 @@ object Utils {
                  AppOpenManager(application)
              }
          }
+        //TODO : Remove empty spaces like this and beatify your cade so reviewer can go through easily
 
 
 
@@ -67,12 +70,14 @@ object Utils {
 
     fun isAppDownloadedFromPlayStore(context: Context): Boolean {
         val installer = context.packageManager.getInstallerPackageName(context.packageName)
+        //TODO : Static string are not allowed, create a Constant file and shift these there.
         return "com.android.vending" == installer
     }
 
 
     fun getAdSize(activity: Activity, view: View): AdSize? {
         // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        //TODO: Avoid deprecations
         val display = activity.windowManager.defaultDisplay
         val outMetrics = DisplayMetrics()
         display.getMetrics(outMetrics)

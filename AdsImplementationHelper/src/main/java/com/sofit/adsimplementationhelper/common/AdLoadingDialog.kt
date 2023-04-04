@@ -12,11 +12,14 @@ import com.sofit.adsimplementationhelper.databinding.AdLoadingDialogBinding
 
 object AdLoadingDialog {
 
+    //TODO : Avoid these type of warnings and problems and make a practice to not leave any minors linting issues like this
     var dialog:Dialog ? = null
 
     fun showDialog(context: Context) {
         val binding = AdLoadingDialogBinding.inflate(LayoutInflater.from(context))
         dialog = Dialog(context)
+
+        //TODO: Never use bang operator instead use elvis operator along with null safe
         dialog!!.setContentView(binding.root)
         dialog!!.setCancelable(false)
         dialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 
 object AdLogPrefs{
 
+    //TODO : Remove empty spaces like this and beatify your cade so reviewer can go through easily
 
 
 
@@ -14,6 +15,8 @@ object AdLogPrefs{
     private val gson = Gson()
 
     fun saveLogs(myObject: AdLogModel,context: Context) {
+
+        //TODO : Static string are not allowed, create a Constant file and shift these there.
         val preferenceName = "AD_LOG_PREFS"
          val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
@@ -22,6 +25,7 @@ object AdLogPrefs{
     }
 
     fun getLogs(context: Context): AdLogModel? {
+        //TODO : Static string are not allowed, create a Constant file and shift these there.
         val preferenceName = "AD_LOG_PREFS"
         val preference: SharedPreferences =
             context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
