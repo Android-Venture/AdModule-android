@@ -31,12 +31,12 @@ class AdTestActivity : AppCompatActivity() {
 
             }
 
-        })
+        },"Test Activity")
         AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!)
 
         binding.showInterBtn.setOnClickListener {
 
-            AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!){
+            AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!,"Test Activity"){
 
             }
         }
