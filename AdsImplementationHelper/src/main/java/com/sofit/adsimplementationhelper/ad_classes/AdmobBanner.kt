@@ -18,10 +18,14 @@ object AdmobBanner {
     fun showAdmobBanner(
         admob_banner: FrameLayout,
         activity: Activity,
-        requestParams:AdRequestParamModel, callback:com.sofit.adsimplementationhelper.common.AdLoadCallback) {
+        requestParams: AdRequestParamModel,
+        callback: com.sofit.adsimplementationhelper.common.AdLoadCallback,
+        class_name: String
+    ) {
 
-        if (isInternetConnected(activity)  && requestParams.banner_ad_status!! )  {
+        if (isInternetConnected(activity) && requestParams.banner_ad_status!!) {
 
+            Utils.bannerRequests.add(class_name)
             val adView = AdView(activity)
             Utils.BANNER_REQUEST++
             AdLogPrefs.saveLogs(
@@ -31,7 +35,13 @@ object AdmobBanner {
                     Utils.NATIVE_REQUEST,
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
+                    Utils.INTERSTITIAL_IMPRESSION,
+                    Utils.bannerRequests,
+                    Utils.bannerImpressions,
+                    Utils.nativeRequests,
+                    Utils.nativeImpression,
+                    Utils.interstistialRequests,
+                    Utils.interstitialImpression
                 ), activity
             )
 
@@ -56,15 +66,22 @@ object AdmobBanner {
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.BANNER_IMPRESSION++
+                    Utils.bannerImpressions.add(class_name)
                     AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity
+                            AdLogModel(
+                                Utils.BANNER_REQUEST,
+                                Utils.BANNER_IMPRESSION,
+                                Utils.NATIVE_REQUEST,
+                                Utils.NATIVE_IMPRESSION,
+                                Utils.INTERSTITIAL_REQUEST,
+                                Utils.INTERSTITIAL_IMPRESSION,
+                                Utils.bannerRequests,
+                                Utils.bannerImpressions,
+                                Utils.nativeRequests,
+                                Utils.nativeImpression,
+                                Utils.interstistialRequests,
+                                Utils.interstitialImpression
+                            ), activity
                     )
 
                 }

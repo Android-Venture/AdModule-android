@@ -35,7 +35,7 @@ object AdmobClass {
 
 
     // NATIVE AD REQUEST
-    fun load_native_admob1(activity: Activity?, requestParams:AdRequestParamModel) {
+    fun load_native_admob1(activity: Activity?, requestParams:AdRequestParamModel,className:String) {
 
         if (admobNative1 != null) {
             admobNative1 = null
@@ -43,6 +43,7 @@ object AdmobClass {
 
         if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!){
             Utils.NATIVE_REQUEST++
+            Utils.nativeRequests.add(className)
             AdLogPrefs.saveLogs(
                 AdLogModel(
                     Utils.BANNER_REQUEST,
@@ -50,8 +51,14 @@ object AdmobClass {
                     Utils.NATIVE_REQUEST,
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
-                ), activity!!
+                    Utils.INTERSTITIAL_IMPRESSION,
+                    Utils.bannerRequests,
+                    Utils.bannerImpressions,
+                    Utils.nativeRequests,
+                    Utils.nativeImpression,
+                    Utils.interstistialRequests,
+                    Utils.interstitialImpression
+                ), activity
             )
             val builder: AdLoader.Builder = AdLoader.Builder(
                 activity!!, requestParams.native_id!!
@@ -80,8 +87,9 @@ object AdmobClass {
                 }
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    load_native_admob1(activity, requestParams)
+                    load_native_admob1(activity, requestParams,className)
                     Utils.NATIVE_IMPRESSION++
+                    Utils.nativeImpression.add(className)
                     AdLogPrefs.saveLogs(
                         AdLogModel(
                             Utils.BANNER_REQUEST,
@@ -89,8 +97,14 @@ object AdmobClass {
                             Utils.NATIVE_REQUEST,
                             Utils.NATIVE_IMPRESSION,
                             Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity!!
+                            Utils.INTERSTITIAL_IMPRESSION,
+                            Utils.bannerRequests,
+                            Utils.bannerImpressions,
+                            Utils.nativeRequests,
+                            Utils.nativeImpression,
+                            Utils.interstistialRequests,
+                            Utils.interstitialImpression
+                        ), activity
                     )
                 }
             }).build()
@@ -107,16 +121,16 @@ object AdmobClass {
         }
         if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!) {
             Utils.NATIVE_REQUEST++
-            AdLogPrefs.saveLogs(
-                AdLogModel(
-                    Utils.BANNER_REQUEST,
-                    Utils.BANNER_IMPRESSION,
-                    Utils.NATIVE_REQUEST,
-                    Utils.NATIVE_IMPRESSION,
-                    Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
-                ), activity!!
-            )
+//            AdLogPrefs.saveLogs(
+//                AdLogModel(
+//                    Utils.BANNER_REQUEST,
+//                    Utils.BANNER_IMPRESSION,
+//                    Utils.NATIVE_REQUEST,
+//                    Utils.NATIVE_IMPRESSION,
+//                    Utils.INTERSTITIAL_REQUEST,
+//                    Utils.INTERSTITIAL_IMPRESSION
+//                ), activity!!
+//            )
             val builder: AdLoader.Builder = AdLoader.Builder(
                 activity!!,requestParams.native_id!!
             )
@@ -149,16 +163,16 @@ object AdmobClass {
                     super.onAdImpression()
                     load_native_admob2(activity, requestParams)
                     Utils.NATIVE_IMPRESSION++
-                    AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity!!
-                    )
+//                    AdLogPrefs.saveLogs(
+//                        AdLogModel(
+//                            Utils.BANNER_REQUEST,
+//                            Utils.BANNER_IMPRESSION,
+//                            Utils.NATIVE_REQUEST,
+//                            Utils.NATIVE_IMPRESSION,
+//                            Utils.INTERSTITIAL_REQUEST,
+//                            Utils.INTERSTITIAL_IMPRESSION
+//                        ), activity!!
+//                    )
 
                 }
             }).build()
@@ -258,13 +272,14 @@ object AdmobClass {
     }
 
     //INTERSTITIAL
-    fun loadadmob_Interstitial(context: Context?, requestParams: AdRequestParamModel) {
+    fun loadadmob_Interstitial(context: Context?, requestParams: AdRequestParamModel,className:String) {
         if (admob_interstitial1 != null) {
             admob_interstitial1 = null
         }
 
         if (Utils.isInternetConnected(context!!) && requestParams.intersitial_ad_status!!) {
             Utils.INTERSTITIAL_REQUEST++
+            Utils.interstistialRequests.add(className)
             AdLogPrefs.saveLogs(
                 AdLogModel(
                     Utils.BANNER_REQUEST,
@@ -272,8 +287,14 @@ object AdmobClass {
                     Utils.NATIVE_REQUEST,
                     Utils.NATIVE_IMPRESSION,
                     Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
-                ), context!!
+                    Utils.INTERSTITIAL_IMPRESSION,
+                    Utils.bannerRequests,
+                    Utils.bannerImpressions,
+                    Utils.nativeRequests,
+                    Utils.nativeImpression,
+                    Utils.interstistialRequests,
+                    Utils.interstitialImpression
+                ), context
             )
             val request: AdRequest = AdRequest.Builder().build()
             InterstitialAd.load(context!!, requestParams.intersitial_id!!,
@@ -293,19 +314,20 @@ object AdmobClass {
         }
     }
 
-    fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel, onADClose: (Boolean) -> Unit) {
+    fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel,className: String, onADClose: (Boolean) -> Unit) {
         if (admob_interstitial1 != null) {
             showDialog(activity!!)
             admob_interstitial1!!.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent()
                     onADClose.invoke(true)
-                    loadadmob_Interstitial(activity, requestParams)
+                    loadadmob_Interstitial(activity, requestParams,className)
                 }
 
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.INTERSTITIAL_IMPRESSION++
+                    Utils.interstitialImpression.add(className)
                     AdLogPrefs.saveLogs(
                         AdLogModel(
                             Utils.BANNER_REQUEST,
@@ -313,8 +335,14 @@ object AdmobClass {
                             Utils.NATIVE_REQUEST,
                             Utils.NATIVE_IMPRESSION,
                             Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity!!
+                            Utils.INTERSTITIAL_IMPRESSION,
+                            Utils.bannerRequests,
+                            Utils.bannerImpressions,
+                            Utils.nativeRequests,
+                            Utils.nativeImpression,
+                            Utils.interstistialRequests,
+                            Utils.interstitialImpression
+                        ), activity
                     )
 
                 }
@@ -337,17 +365,17 @@ object AdmobClass {
         }
 
         if (Utils.isInternetConnected(context!!) && requestParams.intersitial_ad_status!!) {
-            Utils.INTERSTITIAL_REQUEST++
-            AdLogPrefs.saveLogs(
-                AdLogModel(
-                    Utils.BANNER_REQUEST,
-                    Utils.BANNER_IMPRESSION,
-                    Utils.NATIVE_REQUEST,
-                    Utils.NATIVE_IMPRESSION,
-                    Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
-                ), context!!
-            )
+//            Utils.INTERSTITIAL_REQUEST++
+//            AdLogPrefs.saveLogs(
+//                AdLogModel(
+//                    Utils.BANNER_REQUEST,
+//                    Utils.BANNER_IMPRESSION,
+//                    Utils.NATIVE_REQUEST,
+//                    Utils.NATIVE_IMPRESSION,
+//                    Utils.INTERSTITIAL_REQUEST,
+//                    Utils.INTERSTITIAL_IMPRESSION
+//                ), context!!
+//            )
             val request: AdRequest = AdRequest.Builder().build()
             InterstitialAd.load(context!!, requestParams.intersitial_id!!,
                 request, object : InterstitialAdLoadCallback() {
@@ -373,22 +401,22 @@ object AdmobClass {
                 override fun onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent()
                     onADClose.invoke(true)
-                    loadadmob_Interstitial(activity, requestParams)
+//                    loadadmob_Interstitial(activity, requestParams)
                 }
 
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    Utils.INTERSTITIAL_IMPRESSION++
-                    AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity!!
-                    )
+//                    Utils.INTERSTITIAL_IMPRESSION++
+//                    AdLogPrefs.saveLogs(
+//                        AdLogModel(
+//                            Utils.BANNER_REQUEST,
+//                            Utils.BANNER_IMPRESSION,
+//                            Utils.NATIVE_REQUEST,
+//                            Utils.NATIVE_IMPRESSION,
+//                            Utils.INTERSTITIAL_REQUEST,
+//                            Utils.INTERSTITIAL_IMPRESSION
+//                        ), activity!!
+//                    )
 
                 }
             }

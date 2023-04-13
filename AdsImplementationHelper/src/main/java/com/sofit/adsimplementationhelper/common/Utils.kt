@@ -22,6 +22,13 @@ object Utils {
     var INTERSTITIAL_REQUEST :Int = 0
     var INTERSTITIAL_IMPRESSION : Int = 0
 
+    var bannerRequests:ArrayList<String> = ArrayList()
+    var bannerImpressions:ArrayList<String> = ArrayList()
+    var nativeRequests:ArrayList<String> = ArrayList()
+    var nativeImpression:ArrayList<String> = ArrayList()
+    var interstistialRequests:ArrayList<String> = ArrayList()
+    var interstitialImpression:ArrayList<String> = ArrayList()
+
     const val ADS_PARAM_PREFS_KEY = "ADS_PARAM"
     const val ADS_LOG_PREFS_KEY = "ADS_LOG"
     fun isInternetConnected(context: Context): Boolean {
