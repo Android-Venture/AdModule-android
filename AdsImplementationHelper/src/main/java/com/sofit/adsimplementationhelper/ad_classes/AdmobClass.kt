@@ -33,9 +33,6 @@ import kotlinx.coroutines.*
 
 object AdmobClass {
 
-    var isSendRequest1 = true
-    var isSendRequest2 = true
-    var tag_splash = false
 
     // NATIVE AD REQUEST
     fun load_native_admob1(activity: Activity?, requestParams:AdRequestParamModel) {
@@ -255,18 +252,8 @@ object AdmobClass {
         if (admobNative1 != null) {
             inflateAdmob(activity, admobNative1, container)
 
-        } else if (admobNative2 != null) {
-            inflateAdmob(activity, admobNative2, container)
-
-        } else {
-            if (!isSendRequest1) {
-                load_native_admob1(activity,requestParams )
-
-            }
-            if (!isSendRequest2) {
-                load_native_admob2(activity, requestParams)
-            }
         }
+
 
     }
 

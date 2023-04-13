@@ -54,13 +54,11 @@ object Utils {
     fun adNetworkInitialize(application: Application){
 
 
-         if (isInternetConnected(application.applicationContext) && isAppDownloadedFromPlayStore(application.applicationContext)){
+         if (isInternetConnected(application.applicationContext)){
              MobileAds.initialize(application.applicationContext){
                  AppOpenManager(application)
              }
          }
-
-
 
 
     }

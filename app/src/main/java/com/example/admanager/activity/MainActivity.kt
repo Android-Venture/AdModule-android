@@ -16,9 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AdmobClass.load_native_admob1(this, AdParamsPrefs.getParams(this)!!)
-        AdmobClass.load_native_admob2(this,AdParamsPrefs.getParams(this)!!)
+
+
         AdmobClass.loadadmob_Interstitial(this,  AdParamsPrefs.getParams(this)!!)
+        AdmobClass.load_native_admob1(this, AdParamsPrefs.getParams(this)!!)
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 

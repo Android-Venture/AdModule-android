@@ -3,6 +3,7 @@ package com.example.admanager.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 
 
 import com.example.admanager.databinding.ActivityAdTestBinding
@@ -23,7 +24,7 @@ class AdTestActivity : AppCompatActivity() {
 
         AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!,object :AdLoadCallback{
             override fun onLoaded() {
-
+               binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
             }
 
             override fun onFailed() {

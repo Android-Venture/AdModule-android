@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AdManager</string>
+    <string name="banner_request">Banner Request</string>
+    <string name="banner_impression">Banner Impression</string>
+    <string name="native_ad_request">Native Ad Request</string>
+    <string name="native_ad_impression">Native Ad Impression</string>
+    <string name="interstitial_request">Interstitial Request</string>
+    <string name="interstitial_impression">Interstitial Impression</string>
 </resources>
