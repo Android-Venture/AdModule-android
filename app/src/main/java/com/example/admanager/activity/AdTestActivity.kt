@@ -12,6 +12,7 @@ import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
 import com.sofit.adsimplementationhelper.common.AdLoadCallback
 import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
+import com.sofit.adsimplementationhelper.common.ShowDialog
 
 class AdTestActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class AdTestActivity : AppCompatActivity() {
             }
 
         },"Test Activity")
-        AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!)
+        AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!,"Test Activity")
 
         binding.showInterBtn.setOnClickListener {
 
@@ -42,14 +43,7 @@ class AdTestActivity : AppCompatActivity() {
         }
 
         binding.showLogBtn.setOnClickListener {
-            val ad_log = AdLogPrefs.getLogs(this)
-
-            Log.d("AD_LOG","BANNER_REQ "+ad_log!!.banner_request.toString())
-            Log.d("AD_LOG","BANNER_IMP "+ad_log.banner_impression.toString())
-            Log.d("AD_LOG","NATIVE_REQ "+ad_log.native_request.toString())
-            Log.d("AD_LOG","NATIVE_IMP "+ad_log.native_impression.toString())
-            Log.d("AD_LOG","INTERSTITIAL_REQ "+ad_log.interstitial_request.toString())
-            Log.d("AD_LOG","INTERSTITIAL_IMP "+ad_log.interstitial_impression.toString())
+            ShowDialog.showLogsDialog(this)
         }
     }
 }

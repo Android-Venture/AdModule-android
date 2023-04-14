@@ -25,7 +25,7 @@ object AdmobBanner {
 
         if (isInternetConnected(activity) && requestParams.banner_ad_status!!) {
 
-            Utils.bannerRequests.add(class_name)
+            Utils.bannerRequests.add(class_name+" Load Here")
             val adView = AdView(activity)
             Utils.BANNER_REQUEST++
             AdLogPrefs.saveLogs(
@@ -66,7 +66,7 @@ object AdmobBanner {
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.BANNER_IMPRESSION++
-                    Utils.bannerImpressions.add(class_name)
+                    Utils.bannerImpressions.add(class_name+" Show Here")
                     AdLogPrefs.saveLogs(
                             AdLogModel(
                                 Utils.BANNER_REQUEST,

@@ -21,8 +21,6 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.sofit.adsimplementationhelper.R
 import com.sofit.adsimplementationhelper.common.AdInstance.admobNative1
-import com.sofit.adsimplementationhelper.common.AdInstance.admobNative2
-import com.sofit.adsimplementationhelper.common.AdInstance.admobNativesp
 import com.sofit.adsimplementationhelper.common.AdInstance.admob_interstitial1
 import com.sofit.adsimplementationhelper.common.AdInstance.admob_interstitial2
 import com.sofit.adsimplementationhelper.common.AdLoadingDialog.hideDialog
@@ -43,7 +41,7 @@ object AdmobClass {
 
         if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!){
             Utils.NATIVE_REQUEST++
-            Utils.nativeRequests.add(className)
+            Utils.nativeRequests.add(className+" Load Here")
             AdLogPrefs.saveLogs(
                 AdLogModel(
                     Utils.BANNER_REQUEST,
@@ -76,6 +74,8 @@ object AdmobClass {
             val loader: AdLoader = builder.withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     super.onAdFailedToLoad(loadAdError)
+
+                    Log.d("ADMOB_NATIVE", loadAdError.message)
                 }
                 override fun onAdClosed() {
                     super.onAdClosed()
@@ -88,136 +88,16 @@ object AdmobClass {
                 override fun onAdImpression() {
                     super.onAdImpression()
                     load_native_admob1(activity, requestParams,className)
-                    Utils.NATIVE_IMPRESSION++
-                    Utils.nativeImpression.add(className)
-                    AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION,
-                            Utils.bannerRequests,
-                            Utils.bannerImpressions,
-                            Utils.nativeRequests,
-                            Utils.nativeImpression,
-                            Utils.interstistialRequests,
-                            Utils.interstitialImpression
-                        ), activity
-                    )
-                }
-            }).build()
-            loader.loadAd(AdRequest.Builder().build())
-        }
-
-
-    }
-
-    fun load_native_admob2(activity: Activity?, requestParams:AdRequestParamModel) {
-
-        if (admobNative2 != null) {
-            admobNative2 = null
-        }
-        if (Utils.isInternetConnected(activity!!) && requestParams.native_ad_status!!) {
-            Utils.NATIVE_REQUEST++
-//            AdLogPrefs.saveLogs(
-//                AdLogModel(
-//                    Utils.BANNER_REQUEST,
-//                    Utils.BANNER_IMPRESSION,
-//                    Utils.NATIVE_REQUEST,
-//                    Utils.NATIVE_IMPRESSION,
-//                    Utils.INTERSTITIAL_REQUEST,
-//                    Utils.INTERSTITIAL_IMPRESSION
-//                ), activity!!
-//            )
-            val builder: AdLoader.Builder = AdLoader.Builder(
-                activity!!,requestParams.native_id!!
-            )
-            builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
-                if (admobNative2 != null) {
-                    admobNative2!!.destroy()
-                }
-                admobNative2 = nativeAd
-            })
-            val options = VideoOptions.Builder().setStartMuted(true).build()
-            val nativeAdOptions: NativeAdOptions =
-                NativeAdOptions.Builder().setVideoOptions(options).build()
-            builder.withNativeAdOptions(nativeAdOptions)
-            val loader: AdLoader = builder.withAdListener(object : AdListener() {
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    super.onAdFailedToLoad(loadAdError)
-                }
-
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    Log.d("ADMOB_NATIVE", "onAdClosed: ")
-                }
-
-                override fun onAdLoaded() {
-                    super.onAdLoaded()
-                    Log.d("ADMOB_NATIVE", "onAdLoaded:")
-                }
-
-                override fun onAdImpression() {
-                    super.onAdImpression()
-                    load_native_admob2(activity, requestParams)
-                    Utils.NATIVE_IMPRESSION++
-//                    AdLogPrefs.saveLogs(
-//                        AdLogModel(
-//                            Utils.BANNER_REQUEST,
-//                            Utils.BANNER_IMPRESSION,
-//                            Utils.NATIVE_REQUEST,
-//                            Utils.NATIVE_IMPRESSION,
-//                            Utils.INTERSTITIAL_REQUEST,
-//                            Utils.INTERSTITIAL_IMPRESSION
-//                        ), activity!!
-//                    )
 
                 }
             }).build()
             loader.loadAd(AdRequest.Builder().build())
         }
-    }
 
-    fun load_native_admobsp(activity: Activity?, container: FrameLayout) {
-        if (admobNativesp != null) {
-            admobNativesp = null
-        }
-        val builder: AdLoader.Builder = AdLoader.Builder(
-            activity!!, ""
-        )
-        builder.forNativeAd(NativeAd.OnNativeAdLoadedListener { nativeAd ->
-            if (admobNativesp != null) {
-                admobNativesp!!.destroy()
-            }
-            admobNativesp = nativeAd
-        })
-        val options = VideoOptions.Builder().setStartMuted(true).build()
-        val nativeAdOptions: NativeAdOptions =
-            NativeAdOptions.Builder().setVideoOptions(options).build()
-        builder.withNativeAdOptions(nativeAdOptions)
-        val loader: AdLoader = builder.withAdListener(object : AdListener() {
-            override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                super.onAdFailedToLoad(loadAdError)
-
-            }
-
-            override fun onAdClosed() {
-                super.onAdClosed()
-                Log.d("ADMOB_NATIVE", "onAdClosed: ")
-            }
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-
-            }
-            override fun onAdImpression() {
-                super.onAdImpression()
-            }
-        }).build()
-        loader.loadAd(AdRequest.Builder().build())
 
     }
+
+
 
     fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout) {
         val inflater = LayoutInflater.from(activity)
@@ -261,9 +141,29 @@ object AdmobClass {
         adView.setNativeAd(admob_native)
     }
 
-    fun showNative(activity: Activity?, container: FrameLayout, requestParams: AdRequestParamModel) {
+    fun showNative(activity: Activity?, container: FrameLayout, requestParams: AdRequestParamModel,className: String) {
 
         if (admobNative1 != null) {
+
+
+            Utils.NATIVE_IMPRESSION++
+            Utils.nativeImpression.add(className+" Show Here")
+            AdLogPrefs.saveLogs(
+                AdLogModel(
+                    Utils.BANNER_REQUEST,
+                    Utils.BANNER_IMPRESSION,
+                    Utils.NATIVE_REQUEST,
+                    Utils.NATIVE_IMPRESSION,
+                    Utils.INTERSTITIAL_REQUEST,
+                    Utils.INTERSTITIAL_IMPRESSION,
+                    Utils.bannerRequests,
+                    Utils.bannerImpressions,
+                    Utils.nativeRequests,
+                    Utils.nativeImpression,
+                    Utils.interstistialRequests,
+                    Utils.interstitialImpression
+                ), activity!!
+            )
             inflateAdmob(activity, admobNative1, container)
 
         }
@@ -279,7 +179,7 @@ object AdmobClass {
 
         if (Utils.isInternetConnected(context!!) && requestParams.intersitial_ad_status!!) {
             Utils.INTERSTITIAL_REQUEST++
-            Utils.interstistialRequests.add(className)
+            Utils.interstistialRequests.add(className+" Load Here")
             AdLogPrefs.saveLogs(
                 AdLogModel(
                     Utils.BANNER_REQUEST,
@@ -327,7 +227,7 @@ object AdmobClass {
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.INTERSTITIAL_IMPRESSION++
-                    Utils.interstitialImpression.add(className)
+                    Utils.interstitialImpression.add(className+ "Show Here")
                     AdLogPrefs.saveLogs(
                         AdLogModel(
                             Utils.BANNER_REQUEST,

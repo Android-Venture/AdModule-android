@@ -19,8 +19,8 @@ class LogsAdapter(val logList:ArrayList<String>) : RecyclerView.Adapter<LogsAdap
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to the view holder
-
-        holder.class_name_txt.text = position.toString()+" "+logList.get(position)
+         val index = position+1
+        holder.class_name_txt.text = index.toString()+" "+logList.get(position)
     }
 
     override fun getItemCount(): Int {
