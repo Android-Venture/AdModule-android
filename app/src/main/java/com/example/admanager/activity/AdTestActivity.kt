@@ -1,9 +1,12 @@
 package com.example.admanager.activity
 
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 
 
 import com.example.admanager.databinding.ActivityAdTestBinding
@@ -19,6 +22,7 @@ class AdTestActivity : AppCompatActivity() {
     val binding : ActivityAdTestBinding by lazy {
         ActivityAdTestBinding.inflate(layoutInflater)
     }
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -44,6 +48,12 @@ class AdTestActivity : AppCompatActivity() {
 
         binding.showLogBtn.setOnClickListener {
             ShowDialog.showLogsDialog(this)
+        }
+
+
+        binding.nextBtn.setOnClickListener {
+
+            startActivity(Intent(this,TestActivityTwo::class.java))
         }
     }
 }

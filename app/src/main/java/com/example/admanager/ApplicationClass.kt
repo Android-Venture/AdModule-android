@@ -1,9 +1,9 @@
 package com.example.admanager
 
 import android.app.Application
-import com.example.admanager.models.AdRequestParamModel
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 import com.sofit.adsimplementationhelper.common.Utils
+import com.sofit.adsimplementationhelper.models.AdRequestParamModel
 
 class ApplicationClass:Application() {
 
