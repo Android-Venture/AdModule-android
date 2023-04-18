@@ -24,26 +24,8 @@ object AdmobBanner {
     ) {
 
         if (isInternetConnected(activity) && requestParams.banner_ad_status!!) {
-
-            Utils.bannerRequests.add(class_name+" Load Here")
             val adView = AdView(activity)
-            Utils.BANNER_REQUEST++
-            AdLogPrefs.saveLogs(
-                AdLogModel(
-                    Utils.BANNER_REQUEST,
-                    Utils.BANNER_IMPRESSION,
-                    Utils.NATIVE_REQUEST,
-                    Utils.NATIVE_IMPRESSION,
-                    Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION,
-                    Utils.bannerRequests,
-                    Utils.bannerImpressions,
-                    Utils.nativeRequests,
-                    Utils.nativeImpression,
-                    Utils.interstistialRequests,
-                    Utils.interstitialImpression
-                ), activity
-            )
+
 
             Utils.getAdSize(activity, admob_banner)?.let { adView.setAdSize(it) }
             adView.adUnitId = requestParams.banner_id!!
@@ -60,6 +42,28 @@ object AdmobBanner {
                 override fun onAdLoaded() {
                     super.onAdLoaded()
                     callback.onLoaded()
+
+                    Utils.bannerRequests.add(class_name+" Load Here")
+
+                    Utils.BANNER_REQUEST++
+                    AdLogPrefs.saveLogs(
+                        AdLogModel(
+                            Utils.BANNER_REQUEST,
+                            Utils.BANNER_IMPRESSION,
+                            Utils.NATIVE_REQUEST,
+                            Utils.NATIVE_IMPRESSION,
+                            Utils.INTERSTITIAL_REQUEST,
+                            Utils.INTERSTITIAL_IMPRESSION,
+                            Utils.bannerRequests,
+                            Utils.bannerImpressions,
+                            Utils.nativeRequests,
+                            Utils.nativeImpression,
+                            Utils.interstistialRequests,
+                            Utils.interstitialImpression
+                        ), activity
+                    )
+
+
 //                    admob_banner.visibility = View.VISIBLE
                 }
 
