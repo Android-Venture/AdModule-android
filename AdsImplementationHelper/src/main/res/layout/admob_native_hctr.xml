@@ -95,7 +95,7 @@
         <Button
             android:id="@+id/ad_call_to_action_admob_hctr"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/stroke_ad"
             android:text="Install"

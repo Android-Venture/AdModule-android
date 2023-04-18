@@ -1,20 +1,20 @@
 package com.sofit.adsimplementationhelper.ad_classes
 
 import android.app.Activity
-import android.content.Context
-import android.util.Log
-import android.view.View
+import android.os.Build
 import android.widget.FrameLayout
-import com.example.admanager.models.AdLogModel
-import com.example.admanager.models.AdRequestParamModel
+import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.*
 import com.sofit.adsimplementationhelper.common.AdLogPrefs
+import com.sofit.adsimplementationhelper.common.LOADHERE
+import com.sofit.adsimplementationhelper.common.SHOWHERE
 import com.sofit.adsimplementationhelper.common.Utils
 import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
+import com.sofit.adsimplementationhelper.models.AdLogModel
+import com.sofit.adsimplementationhelper.models.AdRequestParamModel
 
 object AdmobBanner {
-
-
+    @RequiresApi(Build.VERSION_CODES.R)
     fun showAdmobBanner(
         admob_banner: FrameLayout,
         activity: Activity,
@@ -22,78 +22,68 @@ object AdmobBanner {
         callback: com.sofit.adsimplementationhelper.common.AdLoadCallback,
         class_name: String
     ) {
+        if (isInternetConnected(activity)) {
+            if (requestParams.bannerAdStatus == true){
+                val adView = AdView(activity)
+                adView.setAdSize(Utils.getAdSize(activity,admob_banner))
+                adView.adUnitId = requestParams.bannerId!!
+                admob_banner.addView(adView)
+                val adRequest = AdRequest.Builder().build()
+                adView.adListener = object : AdListener() {
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        super.onAdFailedToLoad(loadAdError)
+                        callback.onFailed()
 
-        if (isInternetConnected(activity) && requestParams.banner_ad_status!!) {
-            val adView = AdView(activity)
-
-
-            Utils.getAdSize(activity, admob_banner)?.let { adView.setAdSize(it) }
-            adView.adUnitId = requestParams.banner_id!!
-            admob_banner.addView(adView)
-            val adRequest = AdRequest.Builder().build()
-            adView.adListener = object : AdListener() {
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    super.onAdFailedToLoad(loadAdError)
-
-                    callback.onFailed()
-                    Log.d("BANNER", "onAdFailedToLoad:$loadAdError")
-                }
-
-                override fun onAdLoaded() {
-                    super.onAdLoaded()
-                    callback.onLoaded()
-
-                    Utils.bannerRequests.add(class_name+" Load Here")
-
-                    Utils.BANNER_REQUEST++
-                    AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION,
-                            Utils.bannerRequests,
-                            Utils.bannerImpressions,
-                            Utils.nativeRequests,
-                            Utils.nativeImpression,
-                            Utils.interstistialRequests,
-                            Utils.interstitialImpression
-                        ), activity
-                    )
-
-
-//                    admob_banner.visibility = View.VISIBLE
-                }
-
-                override fun onAdImpression() {
-                    super.onAdImpression()
-                    Utils.BANNER_IMPRESSION++
-                    Utils.bannerImpressions.add(class_name+" Show Here")
-                    AdLogPrefs.saveLogs(
+                    }
+                    override fun onAdLoaded() {
+                        super.onAdLoaded()
+                        callback.onLoaded()
+                        Utils.bannerRequests.add(class_name+ LOADHERE)
+                        Utils.BannerRequest++
+                        AdLogPrefs.saveLogs(
                             AdLogModel(
-                                Utils.BANNER_REQUEST,
-                                Utils.BANNER_IMPRESSION,
-                                Utils.NATIVE_REQUEST,
-                                Utils.NATIVE_IMPRESSION,
-                                Utils.INTERSTITIAL_REQUEST,
-                                Utils.INTERSTITIAL_IMPRESSION,
+                                Utils.BannerRequest,
+                                Utils.BannerImpression,
+                                Utils.NativeRequest,
+                                Utils.NativeImpression,
+                                Utils.InterstitialRequest,
+                                Utils.InterstitialImpression,
                                 Utils.bannerRequests,
                                 Utils.bannerImpressions,
                                 Utils.nativeRequests,
-                                Utils.nativeImpression,
+                                Utils.nativeImpressions,
                                 Utils.interstistialRequests,
-                                Utils.interstitialImpression
+                                Utils.interstitialImpressions
                             ), activity
-                    )
+                        )
+
+                    }
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        Utils.BannerImpression++
+                        Utils.bannerImpressions.add(class_name+ SHOWHERE)
+                        AdLogPrefs.saveLogs(
+                            AdLogModel(
+                                Utils.BannerRequest,
+                                Utils.BannerImpression,
+                                Utils.NativeRequest,
+                                Utils.NativeImpression,
+                                Utils.InterstitialRequest,
+                                Utils.InterstitialImpression,
+                                Utils.bannerRequests,
+                                Utils.bannerImpressions,
+                                Utils.nativeRequests,
+                                Utils.nativeImpressions,
+                                Utils.interstistialRequests,
+                                Utils.interstitialImpressions
+                            ), activity
+                        )
+
+                    }
 
                 }
-
+                adView.loadAd(adRequest)
             }
-            adView.loadAd(adRequest)
         }
-
-
     }
 }

@@ -12,7 +12,7 @@ import com.sofit.adsimplementationhelper.databinding.AdLoadingDialogBinding
 
 object AdLoadingDialog {
 
-    var dialog:Dialog ? = null
+    private var dialog:Dialog ? = null
 
     fun showDialog(context: Context) {
         val binding = AdLoadingDialogBinding.inflate(LayoutInflater.from(context))

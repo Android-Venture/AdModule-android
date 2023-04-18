@@ -9,16 +9,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.example.admanager.models.AdRequestParamModel
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
-import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
-import com.sofit.adsimplementationhelper.common.Utils
 
 class AppOpenManager(private val myApplication: Application) :
     ActivityLifecycleCallbacks, LifecycleObserver {
@@ -56,10 +53,10 @@ class AppOpenManager(private val myApplication: Application) :
         }
         val request = adRequest
 
-        if ((AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!)){
+        if ((AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdStatus ==true)){
             AppOpenAd.load(
                 myApplication,
-                AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_id!!,
+                AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdId!!,
                 request,
                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
                 loadCallback as AppOpenAdLoadCallback
@@ -67,14 +64,13 @@ class AppOpenManager(private val myApplication: Application) :
         }
 
     }
-
     /**
      * Shows the ad if one isn't already showing.
      */
     fun showAdIfAvailable() {
         // Only show ad if there is not already an app open ad currently showing
         // and an ad is available.
-        if (AdParamsPrefs.getParams(myApplication.applicationContext)?.app_open_ad_status!!){
+        if (AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdStatus == true){
             if (!isShowingAd && isAdAvailable) {
                 Log.d(LOG_TAG, "Will show ad.")
                 val fullScreenContentCallback: FullScreenContentCallback =
@@ -85,21 +81,17 @@ class AppOpenManager(private val myApplication: Application) :
                             isShowingAd = false
                             fetchAd()
                         }
-
                         override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
                         override fun onAdShowedFullScreenContent() {
                             isShowingAd = true
                         }
                     }
-                //           if (ShowAppOpen) {
                 appOpenAd!!.show(currentActivity!!)
                 appOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
-                //             ShowAppOpen = false
-//            }
             }
 
             else {
-                Log.d(LOG_TAG, "Can not show ad.")
+
                 fetchAd()
             }
         }
@@ -110,7 +102,7 @@ class AppOpenManager(private val myApplication: Application) :
      * Creates and returns ad request.
      */
     private val adRequest: AdRequest
-        private get() = AdRequest.Builder().build()
+        get() = AdRequest.Builder().build()
 
     /**
      * Utility method that checks if ad exists and can be shown.
@@ -138,12 +130,10 @@ class AppOpenManager(private val myApplication: Application) :
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         showAdIfAvailable()
-        Log.d(LOG_TAG, "onStart")
     }
 
     companion object {
         const val LOG_TAG = "AppOpenManager"
-//        var ShowAppOpen = false
         private var isShowingAd = false
     }
 }

@@ -11,5 +11,5 @@
         android:id="@+id/class_name_txt"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/red"
-        android:text="Main Activity "/>
+        android:text="@string/main_activity"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

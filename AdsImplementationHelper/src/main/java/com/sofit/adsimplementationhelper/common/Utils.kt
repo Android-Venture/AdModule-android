@@ -8,29 +8,27 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
-import com.example.admanager.models.AdRequestParamModel
+import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.MobileAds
-import com.sofit.adsimplementationhelper.BuildConfig
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
 object Utils {
-    var BANNER_REQUEST :Int = 0
-    var BANNER_IMPRESSION : Int = 0
-    var NATIVE_REQUEST :Int = 0
-    var NATIVE_IMPRESSION : Int = 0
-    var INTERSTITIAL_REQUEST :Int = 0
-    var INTERSTITIAL_IMPRESSION : Int = 0
-
+    var BannerRequest :Int = 0
+    var BannerImpression : Int = 0
+    var NativeRequest :Int = 0
+    var NativeImpression : Int = 0
+    var InterstitialRequest :Int = 0
+    var InterstitialImpression : Int = 0
     var bannerRequests:ArrayList<String> = ArrayList()
     var bannerImpressions:ArrayList<String> = ArrayList()
     var nativeRequests:ArrayList<String> = ArrayList()
-    var nativeImpression:ArrayList<String> = ArrayList()
+    var nativeImpressions:ArrayList<String> = ArrayList()
     var interstistialRequests:ArrayList<String> = ArrayList()
-    var interstitialImpression:ArrayList<String> = ArrayList()
+    var interstitialImpressions:ArrayList<String> = ArrayList()
 
-    const val ADS_PARAM_PREFS_KEY = "ADS_PARAM"
-    const val ADS_LOG_PREFS_KEY = "ADS_LOG"
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isInternetConnected(context: Context): Boolean {
         var isConnected = false
         val connectivityManager =context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -45,42 +43,36 @@ object Utils {
             }
         } else {
             connectivityManager.run {
-                activeNetworkInfo?.run {
-                    isConnected = when (type) {
-                        ConnectivityManager.TYPE_WIFI -> true
-                        ConnectivityManager.TYPE_MOBILE -> true
-                        ConnectivityManager.TYPE_ETHERNET -> true
-                        else -> false
-                    }
-                }
+                val networkCapabilities = getNetworkCapabilities(activeNetwork)
+                isConnected = networkCapabilities?.run {
+                    hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                } ?: false
             }
         }
         return isConnected
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun adNetworkInitialize(application: Application){
-
-
          if (isInternetConnected(application.applicationContext)){
              MobileAds.initialize(application.applicationContext){
                  AppOpenManager(application)
              }
          }
-
-
     }
-
     fun isAppDownloadedFromPlayStore(context: Context): Boolean {
         val installer = context.packageManager.getInstallerPackageName(context.packageName)
         return "com.android.vending" == installer
     }
 
-
-    fun getAdSize(activity: Activity, view: View): AdSize? {
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun getAdSize(activity: Activity, view: View): AdSize {
         // Step 2 - Determine the screen width (less decorations) to use for the ad width.
-        val display = activity.windowManager.defaultDisplay
+        val display = activity.display
         val outMetrics = DisplayMetrics()
-        display.getMetrics(outMetrics)
+        display?.getRealMetrics(outMetrics)
 
         val density = outMetrics.density
 
@@ -92,4 +84,5 @@ object Utils {
         val adWidth = (adWidthPixels / density).toInt()
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth)
     }
+
 }

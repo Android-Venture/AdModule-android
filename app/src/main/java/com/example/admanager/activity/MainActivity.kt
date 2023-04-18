@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
 
         AdmobClass.loadadmob_Interstitial(this,  AdParamsPrefs.getParams(this)!!,"Main Activity")
-        AdmobClass.load_native_admob1(this, AdParamsPrefs.getParams(this)!!,"Main Activity")
+        AdmobClass.loadNativeAdmob(this, AdParamsPrefs.getParams(this)!!,"Main Activity")
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 
