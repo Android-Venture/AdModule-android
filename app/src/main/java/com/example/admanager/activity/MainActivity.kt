@@ -11,6 +11,8 @@ import com.sofit.adsimplementationhelper.common.AdParamsPrefs
 
 class MainActivity : AppCompatActivity() {
 
+
+
     private lateinit var handler: Handler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

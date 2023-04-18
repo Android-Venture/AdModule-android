@@ -28,7 +28,7 @@ class AppOpenManager(private val myApplication: Application) :
      */
     init {
         myApplication.registerActivityLifecycleCallbacks(this)
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
     /**

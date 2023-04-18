@@ -180,7 +180,7 @@ object AdmobClass {
             if (requestParams.interstitialAdStatus==true){
 
                 Utils.InterstitialRequest++
-                Utils.interstistialRequests.add(className+" Load Here")
+                Utils.interstistialRequests.add(className+ LOADHERE)
                 AdLogPrefs.saveLogs(
                     AdLogModel(
                         Utils.BannerRequest,
@@ -203,12 +203,12 @@ object AdmobClass {
                         override fun onAdLoaded(@NonNull interstitialAd: InterstitialAd) {
                             super.onAdLoaded(interstitialAd)
                             admobInterstitial = interstitialAd
-                            Log.d("loadChck", "Loaded")
+
                         }
 
                         override fun onAdFailedToLoad(@NonNull loadAdError: LoadAdError) {
                             super.onAdFailedToLoad(loadAdError)
-                            Log.d("loadChck", "Error")
+
                         }
                     })
 
