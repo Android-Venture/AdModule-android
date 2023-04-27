@@ -5,10 +5,7 @@ import android.os.Build
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.*
-import com.sofit.adsimplementationhelper.common.AdLogPrefs
-import com.sofit.adsimplementationhelper.common.LOADHERE
-import com.sofit.adsimplementationhelper.common.SHOWHERE
-import com.sofit.adsimplementationhelper.common.Utils
+import com.sofit.adsimplementationhelper.common.*
 import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
 import com.sofit.adsimplementationhelper.models.AdLogModel
 import com.sofit.adsimplementationhelper.models.AdRequestParamModel
@@ -38,44 +35,21 @@ object AdmobBanner {
                     override fun onAdLoaded() {
                         super.onAdLoaded()
                         callback.onLoaded()
-                        Utils.bannerRequests.add(class_name+ LOADHERE)
-                        Utils.BannerRequest++
+                        Utils.adLogs.add(class_name+ BANNER+LOADHERE)
+
                         AdLogPrefs.saveLogs(
                             AdLogModel(
-                                Utils.BannerRequest,
-                                Utils.BannerImpression,
-                                Utils.NativeRequest,
-                                Utils.NativeImpression,
-                                Utils.InterstitialRequest,
-                                Utils.InterstitialImpression,
-                                Utils.bannerRequests,
-                                Utils.bannerImpressions,
-                                Utils.nativeRequests,
-                                Utils.nativeImpressions,
-                                Utils.interstistialRequests,
-                                Utils.interstitialImpressions
+                                Utils.adLogs
                             ), activity
                         )
 
                     }
                     override fun onAdImpression() {
                         super.onAdImpression()
-                        Utils.BannerImpression++
-                        Utils.bannerImpressions.add(class_name+ SHOWHERE)
+                        Utils.adLogs.add(class_name+ BANNER+ SHOWHERE)
                         AdLogPrefs.saveLogs(
                             AdLogModel(
-                                Utils.BannerRequest,
-                                Utils.BannerImpression,
-                                Utils.NativeRequest,
-                                Utils.NativeImpression,
-                                Utils.InterstitialRequest,
-                                Utils.InterstitialImpression,
-                                Utils.bannerRequests,
-                                Utils.bannerImpressions,
-                                Utils.nativeRequests,
-                                Utils.nativeImpressions,
-                                Utils.interstistialRequests,
-                                Utils.interstitialImpressions
+                                Utils.adLogs
                             ), activity
                         )
 

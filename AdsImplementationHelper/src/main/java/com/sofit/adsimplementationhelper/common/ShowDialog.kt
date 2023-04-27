@@ -14,53 +14,11 @@ object ShowDialog {
         dialog.setContentView(logsDailogBinding.root)
         val adLog = AdLogPrefs.getLogs(context)
         logsDailogBinding.logsRecycler.layoutManager = LinearLayoutManager(context)
-        logsDailogBinding.bannerReqTxt.setOnClickListener {
-            logsDailogBinding.logsRecycler.adapter = adLog?.bannerRequests?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
-        }
 
-        logsDailogBinding.bannerImoTxt.setOnClickListener {
-            logsDailogBinding.logsRecycler.adapter = adLog?.bannerImpressions?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
-        }
-
-        logsDailogBinding.nativeReqTxt.setOnClickListener {
-            logsDailogBinding.logsRecycler.adapter = adLog?.nativeRequests?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
-        }
-
-        logsDailogBinding.nativeImpTxt.setOnClickListener {
-            logsDailogBinding.logsRecycler.adapter = adLog?.nativeImpressions?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
-        }
-
-        logsDailogBinding.interstitialImpTxt.setOnClickListener {
-            logsDailogBinding.logsRecycler.adapter = adLog?.interstitialImpressions?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
-        }
-
-        logsDailogBinding.interstitialReqTxt.setOnClickListener {
-
-            logsDailogBinding.logsRecycler.adapter = adLog?.interstitialRequests?.let { it1 ->
-                LogsAdapter(
-                    it1
-                )
-            }
+        logsDailogBinding.logsRecycler.adapter = adLog?.logs?.let { it1 ->
+            LogsAdapter(
+                it1
+            )
         }
         dialog.show()
 

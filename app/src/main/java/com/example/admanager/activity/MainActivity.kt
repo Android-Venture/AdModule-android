@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import com.example.admanager.AD_FLOW
 import com.example.admanager.R
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
@@ -25,12 +26,15 @@ class MainActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 
-            startActivity(Intent(this,AdTestActivity::class.java))
-
+            val intent = Intent(this,AdTestActivity::class.java)
+            intent.putExtra(AD_FLOW,"Main Activity To Ad Test")
+            startActivity(intent)
 
             finish()
         }, 5000)
 
 
     }
+
+
 }

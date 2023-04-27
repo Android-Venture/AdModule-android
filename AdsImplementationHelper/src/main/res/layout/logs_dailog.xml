@@ -17,120 +17,12 @@
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:id="@+id/content_layout"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:textColor="@color/black"
-            android:id="@+id/banner_req_txt"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:text="@string/banner_request"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:id="@+id/banner_imo_txt"
-            android:textColor="@color/black"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingStart="10dp"
-            android:text="@string/banner_impression"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:textColor="@color/black"
-            android:id="@+id/native_req_txt"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:text="@string/native_ad_request"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:textColor="@color/black"
-            android:id="@+id/native_imp_txt"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:text="@string/native_ad_impression"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:id="@+id/interstitial_req_txt"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingStart="10dp"
-            android:text="@string/interstitial_request"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:textColor="@color/black"
-            android:background="@color/grey" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:textColor="@color/black"
-            android:id="@+id/interstitial_imp_txt"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:text="@string/interstitial_impression"
-            android:textSize="14sp" />
-    </LinearLayout>
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:id="@+id/logs_recycler"
-    app:layout_constraintTop_toBottomOf="@id/content_layout"
+    app:layout_constraintTop_toBottomOf="@id/top_bar"
     app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

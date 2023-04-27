@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.example.admanager.AD_FLOW
 import com.example.admanager.databinding.ActivityTestThreeBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
@@ -20,25 +21,35 @@ class TestActivityThree : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        val flow = intent.getStringExtra(AD_FLOW)
 
 
-        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,
-            AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
-                override fun onLoaded() {
-                    binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
-                }
+        flow?.let {
+            AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,
+                AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
+                    override fun onLoaded() {
+                        binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
+                    }
 
-                override fun onFailed() {
+                    override fun onFailed() {
 
-                }
+                    }
 
-            },"Test Activity Three")
-        AdmobClass.showNative(this,binding.nativeAdFrame, AdParamsPrefs.getParams(this)!!,"Test Activity Three")
+                }, it
+            )
+        }
+        flow?.let {
+            AdmobClass.showNative(this,binding.nativeAdFrame, AdParamsPrefs.getParams(this)!!,
+                it
+            )
+        }
 
         binding.showInterBtn.setOnClickListener {
 
-            AdmobClass.showAdMobInter(this, AdParamsPrefs.getParams(this)!!,"Test Activity Three"){
+            flow?.let { it1 ->
+                AdmobClass.showAdMobInter(this, AdParamsPrefs.getParams(this)!!, it1){
 
+                }
             }
         }
     }

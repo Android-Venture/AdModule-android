@@ -14,18 +14,7 @@ import com.google.android.gms.ads.MobileAds
 import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
 object Utils {
-    var BannerRequest :Int = 0
-    var BannerImpression : Int = 0
-    var NativeRequest :Int = 0
-    var NativeImpression : Int = 0
-    var InterstitialRequest :Int = 0
-    var InterstitialImpression : Int = 0
-    var bannerRequests:ArrayList<String> = ArrayList()
-    var bannerImpressions:ArrayList<String> = ArrayList()
-    var nativeRequests:ArrayList<String> = ArrayList()
-    var nativeImpressions:ArrayList<String> = ArrayList()
-    var interstistialRequests:ArrayList<String> = ArrayList()
-    var interstitialImpressions:ArrayList<String> = ArrayList()
+    var adLogs:ArrayList<String> = ArrayList()
 
 
     @RequiresApi(Build.VERSION_CODES.M)

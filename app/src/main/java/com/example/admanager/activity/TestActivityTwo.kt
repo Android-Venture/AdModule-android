@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.example.admanager.AD_FLOW
 import com.example.admanager.R
 import com.example.admanager.databinding.ActivityTestTwoBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
@@ -23,29 +24,44 @@ class TestActivityTwo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,
-            AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
-            override fun onLoaded() {
-                binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
-            }
+        val flow = intent.getStringExtra(AD_FLOW)
 
-            override fun onFailed() {
+        flow?.let {
+            AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,
+                AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
+                override fun onLoaded() {
+                    binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
+                }
 
-            }
+                override fun onFailed() {
 
-        },"Test Activity TWO")
-        AdmobClass.showNative(this,binding.nativeAdFrame, AdParamsPrefs.getParams(this)!!,"Test Activity TWO")
+                }
+
+            }, it
+            )
+        }
+
+        flow?.let {
+            AdmobClass.showNative(this,binding.nativeAdFrame, AdParamsPrefs.getParams(this)!!,
+                it
+            )
+        }
+
 
         binding.showInterBtn.setOnClickListener {
 
-            AdmobClass.showAdMobInter(this, AdParamsPrefs.getParams(this)!!,"Test Activity TWO"){
+            flow?.let { it1 ->
+                AdmobClass.showAdMobInter(this, AdParamsPrefs.getParams(this)!!, it1){
 
+                }
             }
         }
 
         binding.nextBtn.setOnClickListener {
 
-            startActivity(Intent(this,TestActivityThree::class.java))
+            val intent = Intent(this,TestActivityThree::class.java)
+            intent.putExtra(AD_FLOW,"Test Activity Two To Test Activity Three")
+            startActivity(intent)
         }
     }
 

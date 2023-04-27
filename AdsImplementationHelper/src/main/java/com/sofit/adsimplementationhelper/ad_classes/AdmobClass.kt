@@ -21,14 +21,11 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.sofit.adsimplementationhelper.R
+import com.sofit.adsimplementationhelper.common.*
 import com.sofit.adsimplementationhelper.common.AdInstance.admobNative
 import com.sofit.adsimplementationhelper.common.AdInstance.admobInterstitial
 import com.sofit.adsimplementationhelper.common.AdLoadingDialog.hideDialog
 import com.sofit.adsimplementationhelper.common.AdLoadingDialog.showDialog
-import com.sofit.adsimplementationhelper.common.AdLogPrefs
-import com.sofit.adsimplementationhelper.common.LOADHERE
-import com.sofit.adsimplementationhelper.common.SHOWHERE
-import com.sofit.adsimplementationhelper.common.Utils
 import com.sofit.adsimplementationhelper.models.AdLogModel
 import com.sofit.adsimplementationhelper.models.AdRequestParamModel
 import kotlinx.coroutines.*
@@ -46,22 +43,11 @@ object AdmobClass {
         if (Utils.isInternetConnected(activity)){
 
             if (requestParams.nativeAdStatus == true){
-                Utils.NativeRequest++
-                Utils.nativeRequests.add(className+ LOADHERE)
+
+                Utils.adLogs.add(className+ NATIVE+ LOADHERE)
                 AdLogPrefs.saveLogs(
                     AdLogModel(
-                        Utils.BannerRequest,
-                        Utils.BannerImpression,
-                        Utils.NativeRequest,
-                        Utils.NativeImpression,
-                        Utils.InterstitialRequest,
-                        Utils.InterstitialImpression,
-                        Utils.bannerRequests,
-                        Utils.bannerImpressions,
-                        Utils.nativeRequests,
-                        Utils.nativeImpressions,
-                        Utils.interstistialRequests,
-                        Utils.interstitialImpressions
+                        Utils.adLogs
                     ), activity
                 )
                 val builder: AdLoader.Builder = AdLoader.Builder(
@@ -146,22 +132,10 @@ object AdmobClass {
     }
     fun showNative(activity: Activity?, container: FrameLayout, requestParams: AdRequestParamModel,className: String) {
         if (admobNative != null) {
-            Utils.NativeImpression++
-            Utils.nativeImpressions.add(className+ SHOWHERE)
+            Utils.adLogs.add(className+ NATIVE+ SHOWHERE)
             AdLogPrefs.saveLogs(
                 AdLogModel(
-                    Utils.BannerRequest,
-                    Utils.BannerImpression,
-                    Utils.NativeRequest,
-                    Utils.NativeImpression,
-                    Utils.InterstitialRequest,
-                    Utils.InterstitialImpression,
-                    Utils.bannerRequests,
-                    Utils.bannerImpressions,
-                    Utils.nativeRequests,
-                    Utils.nativeImpressions,
-                    Utils.interstistialRequests,
-                    Utils.interstitialImpressions
+                    Utils.adLogs
                 ), activity!!
             )
             inflateAdmob(activity, admobNative, container)
@@ -179,22 +153,10 @@ object AdmobClass {
 
             if (requestParams.interstitialAdStatus==true){
 
-                Utils.InterstitialRequest++
-                Utils.interstistialRequests.add(className+ LOADHERE)
+                Utils.adLogs.add(className+ INTERSTITIAL+LOADHERE)
                 AdLogPrefs.saveLogs(
                     AdLogModel(
-                        Utils.BannerRequest,
-                        Utils.BannerImpression,
-                        Utils.NativeRequest,
-                        Utils.NativeImpression,
-                        Utils.InterstitialRequest,
-                        Utils.InterstitialImpression,
-                        Utils.bannerRequests,
-                        Utils.bannerImpressions,
-                        Utils.nativeRequests,
-                        Utils.nativeImpressions,
-                        Utils.interstistialRequests,
-                        Utils.interstitialImpressions
+                        Utils.adLogs
                     ), context
                 )
                 val request: AdRequest = AdRequest.Builder().build()
@@ -229,22 +191,10 @@ object AdmobClass {
 
                 override fun onAdImpression() {
                     super.onAdImpression()
-                    Utils.InterstitialImpression++
-                    Utils.interstitialImpressions.add(className+ SHOWHERE)
+                    Utils.adLogs.add(className+ INTERSTITIAL+SHOWHERE)
                     AdLogPrefs.saveLogs(
                         AdLogModel(
-                            Utils.BannerRequest,
-                            Utils.BannerImpression,
-                            Utils.NativeRequest,
-                            Utils.NativeImpression,
-                            Utils.InterstitialRequest,
-                            Utils.InterstitialImpression,
-                            Utils.bannerRequests,
-                            Utils.bannerImpressions,
-                            Utils.nativeRequests,
-                            Utils.nativeImpressions,
-                            Utils.interstistialRequests,
-                            Utils.interstitialImpressions
+                            Utils.adLogs
                         ), activity
                     )
 
