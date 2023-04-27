@@ -21,6 +21,7 @@ object AdmobBanner {
     ) {
         if (isInternetConnected(activity)) {
             if (requestParams.bannerAdStatus == true){
+                Utils.adLogs.add(class_name+ BANNER+LOADHERE)
                 val adView = AdView(activity)
                 adView.setAdSize(Utils.getAdSize(activity,admob_banner))
                 adView.adUnitId = requestParams.bannerId!!
@@ -35,8 +36,6 @@ object AdmobBanner {
                     override fun onAdLoaded() {
                         super.onAdLoaded()
                         callback.onLoaded()
-                        Utils.adLogs.add(class_name+ BANNER+LOADHERE)
-
                         AdLogPrefs.saveLogs(
                             AdLogModel(
                                 Utils.adLogs
