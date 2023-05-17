@@ -8,4 +8,6 @@ object AdInstance {
     var admobNative: NativeAd? = null
 
     var admobInterstitial: InterstitialAd? = null
+
+    var admobInterstitialSplash : InterstitialAd? = null
 }

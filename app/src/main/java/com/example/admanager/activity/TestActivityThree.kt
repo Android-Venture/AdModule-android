@@ -39,7 +39,7 @@ class TestActivityThree : AppCompatActivity() {
             )
         }
         flow?.let {
-            AdmobClass.showNative(this,binding.nativeAdFrame, AdParamsPrefs.getParams(this)!!,
+            AdmobClass.showNative(this,binding.nativeAdFrame,
                 it
             )
         }

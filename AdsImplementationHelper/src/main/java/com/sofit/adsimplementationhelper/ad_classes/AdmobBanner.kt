@@ -27,6 +27,9 @@ object AdmobBanner {
                 adView.adUnitId = requestParams.bannerId!!
                 admob_banner.addView(adView)
                 val adRequest = AdRequest.Builder().build()
+
+
+
                 adView.adListener = object : AdListener() {
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         super.onAdFailedToLoad(loadAdError)

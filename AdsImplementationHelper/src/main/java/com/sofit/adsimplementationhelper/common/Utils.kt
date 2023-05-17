@@ -15,7 +15,8 @@ import com.sofit.adsimplementationhelper.ad_classes.AppOpenManager
 
 object Utils {
     var adLogs:ArrayList<String> = ArrayList()
-
+    var ShowAppOpen = true
+    var interstitialAdCapping = 0
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun isInternetConnected(context: Context): Boolean {
@@ -42,6 +43,8 @@ object Utils {
         }
         return isConnected
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun adNetworkInitialize(application: Application){

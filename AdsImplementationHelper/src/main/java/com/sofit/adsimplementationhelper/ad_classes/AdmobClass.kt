@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -24,6 +23,8 @@ import com.sofit.adsimplementationhelper.R
 import com.sofit.adsimplementationhelper.common.*
 import com.sofit.adsimplementationhelper.common.AdInstance.admobNative
 import com.sofit.adsimplementationhelper.common.AdInstance.admobInterstitial
+import com.sofit.adsimplementationhelper.common.AdInstance.admobInterstitialSplash
+import com.sofit.adsimplementationhelper.common.AdLoadCallback
 import com.sofit.adsimplementationhelper.common.AdLoadingDialog.hideDialog
 import com.sofit.adsimplementationhelper.common.AdLoadingDialog.showDialog
 import com.sofit.adsimplementationhelper.models.AdLogModel
@@ -92,14 +93,14 @@ object AdmobClass {
     fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout) {
         val inflater = LayoutInflater.from(activity)
         val adView: NativeAdView? =
-            inflater.inflate(R.layout.admob_native_hctr, null) as NativeAdView?
+            inflater.inflate(R.layout.admob_native_layout, null) as NativeAdView?
         frame_admob.removeAllViews()
         frame_admob.addView(adView)
-        adView!!.mediaView = adView.findViewById(R.id.ad_media_admob_hctr) as MediaView
-        adView.iconView = adView.findViewById(R.id.ad_app_icon_admob_hctr)
-        adView.bodyView = adView.findViewById(R.id.ad_body_admob_hctr)
-        adView.headlineView = adView.findViewById(R.id.ad_headline_admob_hctr)
-        adView.callToActionView = adView.findViewById(R.id.ad_call_to_action_admob_hctr)
+        adView!!.mediaView = adView.findViewById(R.id.ad_media) as MediaView
+        adView.iconView = adView.findViewById(R.id.ad_app_icon)
+        adView.bodyView = adView.findViewById(R.id.ad_body)
+        adView.headlineView = adView.findViewById(R.id.ad_headline)
+        adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
         if (admob_native!!.body == null) {
             if (adView != null) {
                 adView.bodyView!!.visibility = View.INVISIBLE
@@ -130,7 +131,7 @@ object AdmobClass {
         }
         adView.setNativeAd(admob_native)
     }
-    fun showNative(activity: Activity?, container: FrameLayout, requestParams: AdRequestParamModel,className: String) {
+    fun showNative(activity: Activity?, container: FrameLayout,className: String) {
         if (admobNative != null) {
             Utils.adLogs.add(className+ NATIVE+ SHOWHERE)
             AdLogPrefs.saveLogs(
@@ -178,17 +179,124 @@ object AdmobClass {
         }
     }
 
-    fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel,className: String, onADClose: (Boolean) -> Unit) {
-        if (admobInterstitial != null) {
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel, className: String, onADClose: (Boolean) -> Unit) {
+        if (Utils.interstitialAdCapping == requestParams.interstitialCapping){
+            Utils.interstitialAdCapping = 0
+            if (admobInterstitial != null ) {
+                showDialog(activity!!)
+                admobInterstitial!!.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    @RequiresApi(Build.VERSION_CODES.M)
+                    override fun onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent()
+                        onADClose.invoke(true)
+                        loadAdmobInterstitial(activity, requestParams,className)
+
+                        Utils.ShowAppOpen = true
+                    }
+
+
+                    override fun onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent()
+
+
+                        Utils.ShowAppOpen = false
+                    }
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        Utils.adLogs.add(className+ INTERSTITIAL+SHOWHERE)
+                        AdLogPrefs.saveLogs(
+                            AdLogModel(
+                                Utils.adLogs
+                            ), activity
+                        )
+
+                    }
+                }
+                CoroutineScope(Dispatchers.Default).launch {
+                    delay(1500)
+                    withContext(Dispatchers.Main) {
+                        hideDialog()
+                        admobInterstitial!!.show(activity)
+                    }
+                }
+            }else{
+                onADClose.invoke(true)
+                loadAdmobInterstitial(activity,requestParams,className)
+            }
+
+        }else{
+            Utils.interstitialAdCapping++
+            onADClose.invoke(true)
+        }
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun loadAdmobInterstitialSplash(context: Context?, requestParams: AdRequestParamModel, className: String,callback: AdLoadCallback){
+
+        if (admobInterstitialSplash != null) {
+            admobInterstitialSplash = null
+        }
+
+
+        if (Utils.isInternetConnected(context!!)) {
+
+            if (requestParams.interstitialAdStatus==true){
+
+                Utils.adLogs.add(className+ INTERSTITIAL+LOADHERE)
+                AdLogPrefs.saveLogs(
+                    AdLogModel(
+                        Utils.adLogs
+                    ), context
+                )
+                val request: AdRequest = AdRequest.Builder().build()
+                InterstitialAd.load(context, requestParams.interstitialId!!,
+                    request, object : InterstitialAdLoadCallback() {
+                        override fun onAdLoaded(@NonNull interstitialAd: InterstitialAd) {
+                            super.onAdLoaded(interstitialAd)
+                            admobInterstitialSplash = interstitialAd
+
+                            callback.onLoaded()
+
+                        }
+
+                        override fun onAdFailedToLoad(@NonNull loadAdError: LoadAdError) {
+                            super.onAdFailedToLoad(loadAdError)
+
+                            callback.onFailed()
+
+                        }
+                    })
+
+            }
+        }
+
+    }
+
+
+    fun showAdmobInterSplash(activity: Activity?,className: String, onADClose: (Boolean) -> Unit){
+
+        if (admobInterstitialSplash != null) {
             showDialog(activity!!)
-            admobInterstitial!!.fullScreenContentCallback = object : FullScreenContentCallback() {
+            admobInterstitialSplash!!.fullScreenContentCallback = object : FullScreenContentCallback() {
                 @RequiresApi(Build.VERSION_CODES.M)
                 override fun onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent()
                     onADClose.invoke(true)
-                    loadAdmobInterstitial(activity, requestParams,className)
+                    Utils.ShowAppOpen = true
                 }
 
+
+                override fun onAdShowedFullScreenContent() {
+                    super.onAdShowedFullScreenContent()
+
+
+                    Utils.ShowAppOpen = false
+                }
                 override fun onAdImpression() {
                     super.onAdImpression()
                     Utils.adLogs.add(className+ INTERSTITIAL+SHOWHERE)
@@ -204,10 +312,15 @@ object AdmobClass {
                 delay(1500)
                 withContext(Dispatchers.Main) {
                     hideDialog()
-                    admobInterstitial!!.show(activity)
+                    admobInterstitialSplash!!.show(activity)
                 }
             }
+        }else{
+
+            onADClose.invoke(true)
         }
+
+
     }
 
 

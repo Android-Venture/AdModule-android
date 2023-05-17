@@ -16,12 +16,14 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
+import com.sofit.adsimplementationhelper.common.Utils
 
 class AppOpenManager(private val myApplication: Application) :
     ActivityLifecycleCallbacks, LifecycleObserver {
     private var appOpenAd: AppOpenAd? = null
     var loadCallback: AppOpenAdLoadCallback? = null
     var currentActivity: Activity? = null
+
 
     /**
      * Constructor
@@ -86,8 +88,12 @@ class AppOpenManager(private val myApplication: Application) :
                             isShowingAd = true
                         }
                     }
-                appOpenAd!!.show(currentActivity!!)
-                appOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+
+                if (Utils.ShowAppOpen){
+                    appOpenAd!!.show(currentActivity!!)
+                    appOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+                }
+
             }
 
             else {
