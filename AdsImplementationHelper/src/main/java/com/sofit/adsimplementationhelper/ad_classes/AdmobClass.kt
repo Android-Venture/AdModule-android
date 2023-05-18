@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -94,7 +92,8 @@ object AdmobClass {
 
     }
 
-    fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout,button_color:Int,textColor:Int,adChoiceColor: Int) {
+    @SuppressLint("CutPasteId")
+    fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout, button_color:Int, textColor:Int, adChoiceColor: Int) {
         val inflater = LayoutInflater.from(activity)
         val adView: NativeAdView? =
             inflater.inflate(R.layout.admob_native_layout, null) as NativeAdView?
@@ -138,10 +137,10 @@ object AdmobClass {
         val button = adView.findViewById<MaterialButton>(R.id.ad_call_to_action)
         val heading_txt = adView.findViewById<TextView>(R.id.ad_headline)
         val body_txt = adView.findViewById<TextView>(R.id.ad_body)
-        val ad_choice = adView.findViewById<TextView>(R.id.ad_choice_txt)
+        val ad_choice_txt = adView.findViewById<TextView>(R.id.ad_choice_txt)
         heading_txt.setTextColor(textColor)
         body_txt.setTextColor(textColor)
-        ad_choice.setBackgroundResource(adChoiceColor)
+        ad_choice_txt.setBackgroundResource(adChoiceColor)
         button.backgroundTintList = ColorStateList.valueOf(activity?.resources!!.getColor(button_color))
     }
     fun showNative(activity: Activity?, container: FrameLayout,className: String,button_color: Int,textColor:Int,adChoiceColor: Int) {
