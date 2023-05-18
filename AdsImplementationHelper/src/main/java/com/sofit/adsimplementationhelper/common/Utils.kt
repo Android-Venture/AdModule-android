@@ -59,6 +59,7 @@ object Utils {
         return "com.android.vending" == installer
     }
 
+
     @RequiresApi(Build.VERSION_CODES.R)
     fun getAdSize(activity: Activity, view: View): AdSize {
         // Step 2 - Determine the screen width (less decorations) to use for the ad width.

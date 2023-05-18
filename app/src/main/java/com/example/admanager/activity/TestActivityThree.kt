@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.admanager.AD_FLOW
+import com.example.admanager.R
 import com.example.admanager.databinding.ActivityTestThreeBinding
 import com.sofit.adsimplementationhelper.ad_classes.AdmobBanner
 import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
@@ -29,10 +30,12 @@ class TestActivityThree : AppCompatActivity() {
                 AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
                     override fun onLoaded() {
                         binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
+                        binding.bannerIncludeLayout.adLoadingTxt.visibility = View.GONE
                     }
 
                     override fun onFailed() {
-
+                        binding.bannerIncludeLayout.bannerAdFrame.visibility = View.GONE
+                        binding.bannerIncludeLayout.adLoadingTxt.visibility = View.VISIBLE
                     }
 
                 }, it
@@ -41,7 +44,7 @@ class TestActivityThree : AppCompatActivity() {
         flow?.let {
             AdmobClass.showNative(this,binding.nativeAdFrame,
                 it
-            )
+            , R.color.strong_grey,R.color.purple_200,R.color.purple_700)
         }
 
         binding.showInterBtn.setOnClickListener {

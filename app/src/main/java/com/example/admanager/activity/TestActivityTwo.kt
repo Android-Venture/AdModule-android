@@ -29,13 +29,15 @@ class TestActivityTwo : AppCompatActivity() {
         flow?.let {
             AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,
                 AdParamsPrefs.getParams(this)!!,object : AdLoadCallback {
-                override fun onLoaded() {
-                    binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
-                }
+                    override fun onLoaded() {
+                        binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
+                        binding.bannerIncludeLayout.adLoadingTxt.visibility = View.GONE
+                    }
 
-                override fun onFailed() {
-
-                }
+                    override fun onFailed() {
+                        binding.bannerIncludeLayout.bannerAdFrame.visibility = View.GONE
+                        binding.bannerIncludeLayout.adLoadingTxt.visibility = View.VISIBLE
+                    }
 
             }, it
             )
@@ -43,8 +45,7 @@ class TestActivityTwo : AppCompatActivity() {
 
         flow?.let {
             AdmobClass.showNative(this,binding.nativeAdFrame,
-                it
-            )
+                it, R.color.strong_grey,R.color.purple_200,R.color.purple_700)
         }
 
 

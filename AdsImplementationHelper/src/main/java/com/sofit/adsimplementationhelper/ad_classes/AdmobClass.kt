@@ -3,6 +3,8 @@ package com.sofit.adsimplementationhelper.ad_classes
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -19,6 +22,7 @@ import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
+import com.google.android.material.button.MaterialButton
 import com.sofit.adsimplementationhelper.R
 import com.sofit.adsimplementationhelper.common.*
 import com.sofit.adsimplementationhelper.common.AdInstance.admobNative
@@ -89,8 +93,8 @@ object AdmobClass {
 
 
     }
-    @SuppressLint("InflateParams")
-    fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout) {
+
+    fun inflateAdmob(activity: Activity?, admob_native: NativeAd?, frame_admob: FrameLayout,button_color:Int,textColor:Int,adChoiceColor: Int) {
         val inflater = LayoutInflater.from(activity)
         val adView: NativeAdView? =
             inflater.inflate(R.layout.admob_native_layout, null) as NativeAdView?
@@ -130,8 +134,17 @@ object AdmobClass {
             (adView.iconView as ImageView).visibility = View.VISIBLE
         }
         adView.setNativeAd(admob_native)
+
+        val button = adView.findViewById<MaterialButton>(R.id.ad_call_to_action)
+        val heading_txt = adView.findViewById<TextView>(R.id.ad_headline)
+        val body_txt = adView.findViewById<TextView>(R.id.ad_body)
+        val ad_choice = adView.findViewById<TextView>(R.id.ad_choice_txt)
+        heading_txt.setTextColor(textColor)
+        body_txt.setTextColor(textColor)
+        ad_choice.setBackgroundResource(adChoiceColor)
+        button.backgroundTintList = ColorStateList.valueOf(activity?.resources!!.getColor(button_color))
     }
-    fun showNative(activity: Activity?, container: FrameLayout,className: String) {
+    fun showNative(activity: Activity?, container: FrameLayout,className: String,button_color: Int,textColor:Int,adChoiceColor: Int) {
         if (admobNative != null) {
             Utils.adLogs.add(className+ NATIVE+ SHOWHERE)
             AdLogPrefs.saveLogs(
@@ -139,7 +152,7 @@ object AdmobClass {
                     Utils.adLogs
                 ), activity!!
             )
-            inflateAdmob(activity, admobNative, container)
+            inflateAdmob(activity, admobNative, container,button_color,textColor,adChoiceColor)
 
         }
 

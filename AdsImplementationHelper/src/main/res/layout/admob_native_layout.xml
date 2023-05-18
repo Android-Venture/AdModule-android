@@ -12,26 +12,7 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/ad_call_to_action"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/red"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:theme="@style/Theme.MaterialComponents"
-                app:cornerRadius="14dp" />
-
-        </LinearLayout>
 
 
         <LinearLayout
@@ -46,6 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -72,9 +54,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@color/black"
                             android:fontFamily="@font/roboto"
                             android:padding="2dp"
+                            android:id="@+id/ad_choice_txt"
                             android:text="Ad"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
@@ -86,7 +68,6 @@
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/roboto_bold"
                             android:maxLines="1"
-                            android:textColor="@color/ad_heading_colour"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -100,7 +81,6 @@
                         android:layout_marginRight="20dp"
                         android:fontFamily="@font/roboto"
                         android:maxLines="2"
-                        android:textColor="@color/ad_body_colour"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -122,7 +102,23 @@
                     android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ad_call_to_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cornerRadius="14dp" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
