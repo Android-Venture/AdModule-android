@@ -7,53 +7,72 @@
     android:background="@color/white"
     tools:context=".activity.AdTestActivity">
 
-    <include layout="@layout/banner_layout"
-        android:id="@+id/banner_include_layout"/>
+    <include
+        android:id="@+id/banner_include_layout"
+        layout="@layout/banner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"/>
 
     <FrameLayout
         android:id="@+id/native_ad_frame"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/grey"
-        />
-
-    <TextView
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_35sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/stroke_ad"
-        android:elevation="@dimen/_2sdp"
-        android:id="@+id/show_inter_btn"
-        android:text="Show Inter"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:textSize="@dimen/_12ssp"
-        android:fontFamily="@font/roboto_bold"
-        android:backgroundTint="@color/red"
-        android:layout_marginBottom="@dimen/_10sdp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/show_inter_btn"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_35sdp"
-        app:layout_constraintBottom_toTopOf="@+id/show_inter_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/stroke_ad"
-        android:elevation="@dimen/_2sdp"
-        android:id="@+id/show_log_btn"
-        android:text="Show Log"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:textSize="@dimen/_12ssp"
-        android:fontFamily="@font/roboto_bold"
         android:backgroundTint="@color/red"
-        android:layout_marginBottom="@dimen/_10sdp"/>
+        android:elevation="@dimen/_2sdp"
+        android:fontFamily="@font/roboto_bold"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="Show Inter"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/show_log_btn"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/stroke_ad"
+        android:backgroundTint="@color/red"
+        android:elevation="@dimen/_2sdp"
+        android:fontFamily="@font/roboto_bold"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="Show Log"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toTopOf="@+id/show_inter_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/next_btn"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/stroke_ad"
+        android:backgroundTint="@color/red"
+        android:elevation="@dimen/_2sdp"
+        android:fontFamily="@font/roboto_bold"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="Next Screen"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toTopOf="@+id/show_log_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

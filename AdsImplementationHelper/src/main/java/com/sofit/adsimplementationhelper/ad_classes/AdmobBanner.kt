@@ -1,78 +1,65 @@
 package com.sofit.adsimplementationhelper.ad_classes
 
 import android.app.Activity
-import android.content.Context
-import android.util.Log
-import android.view.View
+import android.os.Build
 import android.widget.FrameLayout
-import com.example.admanager.models.AdLogModel
-import com.example.admanager.models.AdRequestParamModel
+import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.*
-import com.sofit.adsimplementationhelper.common.AdLogPrefs
-import com.sofit.adsimplementationhelper.common.Utils
+import com.sofit.adsimplementationhelper.common.*
 import com.sofit.adsimplementationhelper.common.Utils.isInternetConnected
+import com.sofit.adsimplementationhelper.models.AdLogModel
+import com.sofit.adsimplementationhelper.models.AdRequestParamModel
 
 object AdmobBanner {
-
 
     fun showAdmobBanner(
         admob_banner: FrameLayout,
         activity: Activity,
-        requestParams:AdRequestParamModel, callback:com.sofit.adsimplementationhelper.common.AdLoadCallback) {
+        requestParams: AdRequestParamModel,
+        callback: com.sofit.adsimplementationhelper.common.AdLoadCallback,
+        class_name: String
+    ) {
+        if (isInternetConnected(activity)) {
+            if (requestParams.bannerAdStatus == true){
+                Utils.adLogs.add(class_name+ BANNER+LOADHERE)
+                val adView = AdView(activity)
+                adView.setAdSize(Utils.getAdSize(activity,admob_banner))
+                adView.adUnitId = requestParams.bannerId!!
+                admob_banner.addView(adView)
+                val adRequest = AdRequest.Builder().build()
 
-        if (isInternetConnected(activity)  && requestParams.banner_ad_status!! )  {
 
-            val adView = AdView(activity)
-            Utils.BANNER_REQUEST++
-            AdLogPrefs.saveLogs(
-                AdLogModel(
-                    Utils.BANNER_REQUEST,
-                    Utils.BANNER_IMPRESSION,
-                    Utils.NATIVE_REQUEST,
-                    Utils.NATIVE_IMPRESSION,
-                    Utils.INTERSTITIAL_REQUEST,
-                    Utils.INTERSTITIAL_IMPRESSION
-                ), activity
-            )
 
-            Utils.getAdSize(activity, admob_banner)?.let { adView.setAdSize(it) }
-            adView.adUnitId = requestParams.banner_id!!
-            admob_banner.addView(adView)
-            val adRequest = AdRequest.Builder().build()
-            adView.adListener = object : AdListener() {
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    super.onAdFailedToLoad(loadAdError)
+                adView.adListener = object : AdListener() {
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        super.onAdFailedToLoad(loadAdError)
+                        callback.onFailed()
 
-                    callback.onFailed()
-                    Log.d("BANNER", "onAdFailedToLoad:$loadAdError")
-                }
+                    }
+                    override fun onAdLoaded() {
+                        super.onAdLoaded()
+                        callback.onLoaded()
+                        AdLogPrefs.saveLogs(
+                            AdLogModel(
+                                Utils.adLogs
+                            ), activity
+                        )
 
-                override fun onAdLoaded() {
-                    super.onAdLoaded()
-                    callback.onLoaded()
-//                    admob_banner.visibility = View.VISIBLE
-                }
+                    }
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        Utils.adLogs.add(class_name+ BANNER+ SHOWHERE)
+                        AdLogPrefs.saveLogs(
+                            AdLogModel(
+                                Utils.adLogs
+                            ), activity
+                        )
 
-                override fun onAdImpression() {
-                    super.onAdImpression()
-                    Utils.BANNER_IMPRESSION++
-                    AdLogPrefs.saveLogs(
-                        AdLogModel(
-                            Utils.BANNER_REQUEST,
-                            Utils.BANNER_IMPRESSION,
-                            Utils.NATIVE_REQUEST,
-                            Utils.NATIVE_IMPRESSION,
-                            Utils.INTERSTITIAL_REQUEST,
-                            Utils.INTERSTITIAL_IMPRESSION
-                        ), activity
-                    )
+                    }
 
                 }
-
+                adView.loadAd(adRequest)
             }
-            adView.loadAd(adRequest)
         }
-
-
     }
 }
