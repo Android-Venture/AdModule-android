@@ -193,7 +193,7 @@ object AdmobClass {
 
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     fun showAdMobInter(activity: Activity?, requestParams: AdRequestParamModel, className: String, onADClose: (Boolean) -> Unit) {
         if (Utils.interstitialAdCapping == requestParams.interstitialCapping){
             Utils.interstitialAdCapping = 0
@@ -334,6 +334,8 @@ object AdmobClass {
 
 
     }
+
+
 
 
 
