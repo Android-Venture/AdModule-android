@@ -36,7 +36,7 @@ import kotlinx.coroutines.*
 object AdmobClass {
 
     // NATIVE AD REQUEST
-    @RequiresApi(Build.VERSION_CODES.M)
+
     fun loadNativeAdmob(activity: Activity, requestParams: AdRequestParamModel, className:String) {
 
         if (admobNative != null) {
@@ -157,7 +157,7 @@ object AdmobClass {
 
     }
     //INTERSTITIAL
-    @RequiresApi(Build.VERSION_CODES.M)
+
     fun loadAdmobInterstitial(context: Context?, requestParams: AdRequestParamModel, className:String) {
         if (admobInterstitial != null) {
             admobInterstitial = null
@@ -247,7 +247,7 @@ object AdmobClass {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     fun loadAdmobInterstitialSplash(context: Context?, requestParams: AdRequestParamModel, className: String,callback: AdLoadCallback){
 
         if (admobInterstitialSplash != null) {

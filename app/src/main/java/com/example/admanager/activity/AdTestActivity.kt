@@ -56,6 +56,7 @@ class AdTestActivity : AppCompatActivity() {
         binding.showInterBtn.setOnClickListener {
 
             flow?.let { it1 ->
+
                 AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!, it1){
 
                 }

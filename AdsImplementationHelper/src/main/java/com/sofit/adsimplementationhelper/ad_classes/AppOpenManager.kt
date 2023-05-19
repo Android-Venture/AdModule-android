@@ -56,13 +56,15 @@ class AppOpenManager(private val myApplication: Application) :
         val request = adRequest
 
         if ((AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdStatus ==true)){
-            AppOpenAd.load(
-                myApplication,
-                AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdId!!,
-                request,
-                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-                loadCallback as AppOpenAdLoadCallback
-            )
+            AdParamsPrefs.getParams(myApplication.applicationContext)?.appOpenAdId?.let {
+                AppOpenAd.load(
+                    myApplication,
+                    it,
+                    request,
+                    AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
+                    loadCallback as AppOpenAdLoadCallback
+                )
+            }
         }
 
     }

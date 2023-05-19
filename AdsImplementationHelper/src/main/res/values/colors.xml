@@ -12,5 +12,5 @@
     <color name="strong_grey">#50545A</color>
     <color name="grey">#ACABAB</color>
     <color name="red">#EA4141</color>
-    <color name="loading_txt">#3490dc</color>
+    <color name="loading_txt_color">#3490dc</color>
 </resources>

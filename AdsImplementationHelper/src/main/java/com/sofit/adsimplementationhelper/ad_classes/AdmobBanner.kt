@@ -11,7 +11,7 @@ import com.sofit.adsimplementationhelper.models.AdLogModel
 import com.sofit.adsimplementationhelper.models.AdRequestParamModel
 
 object AdmobBanner {
-    @RequiresApi(Build.VERSION_CODES.R)
+
     fun showAdmobBanner(
         admob_banner: FrameLayout,
         activity: Activity,
