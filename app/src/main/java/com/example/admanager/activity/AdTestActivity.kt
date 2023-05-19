@@ -1,8 +1,14 @@
 package com.example.admanager.activity
 
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.annotation.RequiresApi
+import com.example.admanager.AD_FLOW
+import com.example.admanager.R
 
 
 import com.example.admanager.databinding.ActivityAdTestBinding
@@ -11,44 +17,61 @@ import com.sofit.adsimplementationhelper.ad_classes.AdmobClass
 import com.sofit.adsimplementationhelper.common.AdLoadCallback
 import com.sofit.adsimplementationhelper.common.AdLogPrefs
 import com.sofit.adsimplementationhelper.common.AdParamsPrefs
+import com.sofit.adsimplementationhelper.common.ShowDialog
 
 class AdTestActivity : AppCompatActivity() {
 
     val binding : ActivityAdTestBinding by lazy {
         ActivityAdTestBinding.inflate(layoutInflater)
     }
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!,object :AdLoadCallback{
-            override fun onLoaded() {
 
-            }
+        val flow = intent.getStringExtra(AD_FLOW)
+        flow?.let {
+            AdmobBanner.showAdmobBanner(binding.bannerIncludeLayout.bannerAdFrame,this,AdParamsPrefs.getParams(this)!!,object :AdLoadCallback{
+                override fun onLoaded() {
+                    binding.bannerIncludeLayout.bannerAdFrame.visibility = View.VISIBLE
+                    binding.bannerIncludeLayout.adLoadingTxt.visibility = View.GONE
+                }
 
-            override fun onFailed() {
+                override fun onFailed() {
+                    binding.bannerIncludeLayout.bannerAdFrame.visibility = View.GONE
+                    binding.bannerIncludeLayout.adLoadingTxt.visibility = View.VISIBLE
+                }
 
-            }
-
-        })
-        AdmobClass.showNative(this,binding.nativeAdFrame,AdParamsPrefs.getParams(this)!!)
+            },
+                it
+            )
+        }
+        flow?.let {
+            AdmobClass.showNative(this,binding.nativeAdFrame,
+                it
+            , R.color.strong_grey,R.color.purple_200,R.color.purple_700)
+        }
 
         binding.showInterBtn.setOnClickListener {
 
-            AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!){
+            flow?.let { it1 ->
 
+                AdmobClass.showAdMobInter(this,AdParamsPrefs.getParams(this)!!, it1){
+
+                }
             }
         }
 
         binding.showLogBtn.setOnClickListener {
-            val ad_log = AdLogPrefs.getLogs(this)
+            ShowDialog.showLogsDialog(this)
+        }
 
-            Log.d("AD_LOG","BANNER_REQ "+ad_log!!.banner_request.toString())
-            Log.d("AD_LOG","BANNER_IMP "+ad_log.banner_impression.toString())
-            Log.d("AD_LOG","NATIVE_REQ "+ad_log.native_request.toString())
-            Log.d("AD_LOG","NATIVE_IMP "+ad_log.native_impression.toString())
-            Log.d("AD_LOG","INTERSTITIAL_REQ "+ad_log.interstitial_request.toString())
-            Log.d("AD_LOG","INTERSTITIAL_IMP "+ad_log.interstitial_impression.toString())
+
+        binding.nextBtn.setOnClickListener {
+            val intent = Intent(this,TestActivityTwo::class.java)
+            intent.putExtra(AD_FLOW,"Test Ad Activity To Test Activity Two")
+            startActivity(intent)
         }
     }
 }
