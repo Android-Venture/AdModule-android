@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.sofit.adsimplementationhelper'
+//    namespace 'com.sofit.adsimplementationhelper'
     compileSdk 33
 
     defaultConfig {
