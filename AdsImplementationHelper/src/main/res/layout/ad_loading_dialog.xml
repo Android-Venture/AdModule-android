@@ -2,33 +2,33 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="100dp"
-    android:layout_height="110dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        tools:ignore="UseCompoundDrawables">
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp">
 
         <ImageView
             android:id="@+id/loadingImage"
             android:layout_width="60dp"
-            android:layout_margin="7dp"
-            android:layout_gravity="center"
             android:layout_height="60dp" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
             android:textColor="@color/loading_txt_color"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/loading_ad" />
 
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
